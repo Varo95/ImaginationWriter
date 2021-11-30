@@ -1,32 +1,29 @@
 package com.IW.model.objects;
 
-import com.IW.interfaces.IBeans.IAuthor;
-import com.IW.interfaces.IBeans.IBook;
-
-import java.io.Serial;
+import com.IW.interfaces.IBeans.ICharacter;
+import com.IW.interfaces.IBeans.IBook;;import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
 
-public class Author implements Serializable, IAuthor{
+public class Character implements Serializable, ICharacter{
 
 	@Serial
 	private static final long serialVersionUID = 1L;
 	
 	protected long id;
 	protected String name;
-	protected String password;
+	protected String description;
 	protected String photo;
-	protected List<IBook> books;
+	protected IBook book;
 	
-	public Author(long id, String name, String password, String photo, List<IBook> books) {
+	public Character(long id, String name, String description, String photo, IBook book) {
 		this.id = id;
 		this.name = name;
-		this.password = password;
+		this.description = description;
 		this.photo = photo;
-		this.books = books;
+		this.book = book;
 	}
 	
-	public Author() {}
+	public Character() {}
 	@Override
 	public long getId() {
 		return id;
@@ -44,12 +41,12 @@ public class Author implements Serializable, IAuthor{
 		this.name = name;
 	}
 	@Override
-	public String getPassword() {
-		return password;
+	public String getDescription() {
+		return description;
 	}
 	@Override
-	public void setPassword(String password) {
-		this.password = password;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	@Override
 	public String getPhoto() {
@@ -60,13 +57,12 @@ public class Author implements Serializable, IAuthor{
 		this.photo = photo;
 	}
 	@Override
-	public List<IBook> getBooks() {
-		return books;
+	public IBook getBook() {
+		return book;
 	}
 	@Override
-	public void setBooks(List<IBook> books) {
-		this.books = books;
+	public void setBook(IBook book) {
+		this.book = book;
 	}
-	
-	
+
 }

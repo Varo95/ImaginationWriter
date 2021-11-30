@@ -24,7 +24,7 @@ public interface IBeans {
         List<IPart> getParts();
         void setParts(List<IPart> parts);
         List<ICharacter> getCharacters();
-        void setCharacters(List<Character> characters);
+        void setCharacters(List<ICharacter> characters);
         List<IAuthor> getAuthors();
         void setAuthors(List<IAuthor> authors);
         String getCover();

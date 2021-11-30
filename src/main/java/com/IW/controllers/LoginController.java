@@ -30,7 +30,7 @@ public class LoginController {
 
     @FXML
     protected void initialize() {
-        //PersistenceUnit.setInstance("H2");
+        PersistenceUnit.setInstance("H2");
         menuItemsSetIcons();
         imageview.setImage(Tools.getImage("assets/user_default.png", true));
         tf_name.setOnKeyPressed(event -> {
@@ -42,9 +42,9 @@ public class LoginController {
         about.setOnAction(event -> App.loadScene(new Stage(), "about", "Sobre Imagination Writer", true, false));
         connect.setOnAction(event -> {
             if(PersistenceUnit.isH2()){
-                //PersistenceUnit.setInstance("MariaDB");
+                PersistenceUnit.setInstance("MariaDB");
             }else{
-                //PersistenceUnit.setInstance("H2");
+                PersistenceUnit.setInstance("H2");
             }
         });
     }

@@ -7,6 +7,7 @@ module ImaginationWriter {
     requires javafx.media;
     requires javafx.base;
     requires org.slf4j;
+    requires java.sql;
     requires java.persistence;
     requires org.jfxtras.styles.jmetro;
 
