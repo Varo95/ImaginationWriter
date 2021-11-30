@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IW.controllers.AboutController">
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.IW.controllers.AboutController">
     <center>
         <VBox alignment="TOP_CENTER" layoutX="269.0" layoutY="50.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="25.0" BorderPane.alignment="CENTER">
             <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -47,12 +47,12 @@
                         <Insets right="25.0" />
                     </GridPane.margin>
                 </Label>
-                <Label text="Álvaro Pérez Urbano&#10;Marta Arjona&#10;Marcial" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
+                <Label text="Álvaro Pérez&#10;Marta Arjona&#10;Marcial Fernández" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets left="25.0" />
                     </GridPane.margin>
                 </Label>
-                <Label text="alvaroperezab@gmail.com&#10;raultc95@gmail.com" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+                <Label text="alvaroperezab@gmail.com&#10;marta0897@hotmail.com&#10;marcialfrdez@gmail.com" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                     <GridPane.margin>
                         <Insets left="25.0" />
                     </GridPane.margin>

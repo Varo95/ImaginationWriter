@@ -3,12 +3,13 @@ package com.IW.controllers;
 import com.IW.App;
 import com.IW.model.dao.AuthorDAO;
 import com.IW.utils.Dialog;
+import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
-import io.github.palexdev.materialfx.controls.MFXPasswordField;
-import io.github.palexdev.materialfx.controls.MFXTextField;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -17,17 +18,20 @@ public class LoginController {
     @FXML
     private ImageView imageview;
     @FXML
-    private MFXTextField tf_name;
+    private TextField tf_name;
     @FXML
     private MenuItem about;
     @FXML
-    private MFXPasswordField tf_passwd;
+    private PasswordField tf_passwd;
     @FXML
     private CheckMenuItem connect;
+    @FXML
+    private MenuItem close;
 
     @FXML
     protected void initialize() {
-        //TODO iniciar con H2
+        //PersistenceUnit.setInstance("H2");
+        menuItemsSetIcons();
         imageview.setImage(Tools.getImage("assets/user_default.png", true));
         tf_name.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) onClickLogin();
@@ -37,7 +41,11 @@ public class LoginController {
         });
         about.setOnAction(event -> App.loadScene(new Stage(), "about", "Sobre Imagination Writer", true, false));
         connect.setOnAction(event -> {
-            //TODO cambiar conexión a MYSQL
+            if(PersistenceUnit.isH2()){
+                //PersistenceUnit.setInstance("MariaDB");
+            }else{
+                //PersistenceUnit.setInstance("H2");
+            }
         });
     }
 
@@ -60,5 +68,11 @@ public class LoginController {
                 Dialog.showError("Login incorrecto", "Usuario y contraseña incorrectos", "Si no recuerda su usuario y contraseña, regístrese de nuevo");
             }
         }
+    }
+
+    private void menuItemsSetIcons(){
+        close.setGraphic(Tools.getIcon("close"));
+        connect.setGraphic(Tools.getIcon("cloud"));
+        about.setGraphic(Tools.getIcon("info"));
     }
 }

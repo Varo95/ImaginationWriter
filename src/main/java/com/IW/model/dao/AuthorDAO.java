@@ -1,24 +1,26 @@
 package com.IW.model.dao;
 
+import com.IW.interfaces.IBeans;
 import com.IW.interfaces.SQL.IAuthorDAO;
 import com.IW.model.objects.Author;
 import com.IW.utils.PersistenceUnit;
 
 import javax.persistence.EntityManager;
-
-public class AuthorDAO extends Author implements IAuthorDAO {
+import java.util.List;
+//TODO poner extends y implements
+public class AuthorDAO  {
     //TODO cambiar el EM
-    @Override
+
     public void persist() {
-        EntityManager em = PersistenceUnit.createEM("");
+        EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
         em.persist(this);
         em.getTransaction().commit();
     }
 
-    @Override
+
     public void remove() {
-        EntityManager em = PersistenceUnit.createEM("");
+        EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
         em.remove(this);
         em.getTransaction().commit();
@@ -56,5 +58,10 @@ public class AuthorDAO extends Author implements IAuthorDAO {
         }
         return encryptedUPwd.equals(encryptedDBPwd);*/
         return false;
+    }
+
+
+    public List<IBeans.IBook> getBooks() {
+        return null;
     }
 }

@@ -3,6 +3,7 @@ package com.IW.utils;
 import com.IW.App;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro.MDL2IconFont;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,6 +99,30 @@ public class Tools {
         } catch (NoSuchAlgorithmException e) {
             logger.error("no Provider supports a MessageDigestSpi implementation for the specified algorithm" + e.getMessage());
         }
+        return result;
+    }
+
+    /**
+     * This method is used to get icons and put them into a window, making less code and more readable to coders
+     * Codes are extracted from Microsoft official page -> https://docs.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
+     */
+    //Para añadir nuevos iconos consultar la página de Microsoft-> https://docs.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
+    //Añadir "\\u" al principio (al igual que el \n imprime salto de línea) para indicar que es un icono gráfico de Windows.
+    public static MDL2IconFont getIcon(String value) {
+         MDL2IconFont result = switch (value) {
+            case "close" -> new MDL2IconFont("\uE711");
+            case "cloud" -> {
+                result = new MDL2IconFont("\uE753");
+                result.setStyle("-fx-text-fill: #00a8a0;");
+                yield result;
+            }
+            case "info" -> {
+                result = new MDL2IconFont("\uE946");
+                result.setStyle("-fx-text-fill: lightblue;");
+                yield result;
+            }
+            default -> new MDL2IconFont("\uF16B");
+        };
         return result;
     }
 }

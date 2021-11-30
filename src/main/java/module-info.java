@@ -8,6 +8,7 @@ module ImaginationWriter {
     requires javafx.base;
     requires org.slf4j;
     requires java.persistence;
+    requires org.jfxtras.styles.jmetro;
 
     opens com.IW.controllers to javafx.fxml, javafx.controls, javafx.graphics, javafx.media, javafx.base, MaterialFX;
     exports com.IW;

@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        loadScene(primaryStage, "login", " Imagination Writer - Login", false, true);
+        loadScene(primaryStage, "login", " Imagination Writer - Login", false, false);
     }
 
     private static Parent loadFXML(String fxml) {
@@ -37,6 +39,7 @@ public class App extends Application {
     public static void loadScene(Stage stage, String fxml, String title, boolean SaW, boolean isResizable) {
         stage.setScene(new Scene(loadFXML(fxml)));
         Tools.addCssAndIcon(stage);
+        new JMetro(Style.DARK).setScene(stage.getScene());
         stage.setTitle(title);
         stage.setResizable(isResizable);
         if (SaW)
