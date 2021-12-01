@@ -1,15 +1,20 @@
 package com.IW.model.dao;
 
 import com.IW.interfaces.IBeans;
+import com.IW.interfaces.IBeans.IBook;
+import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.SQL.IAuthorDAO;
 import com.IW.model.objects.Author;
+import com.IW.model.objects.Book;
 import com.IW.utils.PersistenceUnit;
+
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Set;
 //TODO poner extends y implements
-public class AuthorDAO  {
-    //TODO cambiar el EM
+public class AuthorDAO extends Author implements IAuthorDAO{
+    //TODO cambiar el EM 
 
     public void persist() {
         EntityManager em = PersistenceUnit.createEM();
@@ -64,4 +69,29 @@ public class AuthorDAO  {
     public List<IBeans.IBook> getBooks() {
         return null;
     }
+    /*
+    public static void addLibro(Author a, Book l) {
+		EntityManager em = PersistenceUnit.createEM();
+		em.getTransaction().begin();
+		List<IAuthor> ax =(List<IAuthor>) em.merge(a);
+		l.setAuthors(ax);
+		
+		Set<Libro> ls = a.getLibros();
+		ls.add(l);
+		ax.setLibros(ls);
+		em.getTransaction().commit();
+	}
+	*/
+	@Override
+	public void addBook(IBook book) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void removeBook(IBook book) {
+		// TODO Auto-generated method stub
+		
+	}
 }

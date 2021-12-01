@@ -1,7 +1,8 @@
 package com.IW.model.objects;
 
 import com.IW.interfaces.IBeans.ICharacter;
-import com.IW.interfaces.IBeans.IBook;;import java.io.Serial;
+import com.IW.interfaces.IBeans.IBook;
+import java.io.Serial;
 import java.io.Serializable;
 
 public class Character implements Serializable, ICharacter{

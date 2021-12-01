@@ -3,7 +3,9 @@ package com.IW.interfaces;
 import com.IW.interfaces.IBeans.IBook;
 
 public interface SQL extends IDAO{
+	
     interface IAuthorDAO extends SQL{
+    	
         void addBook(IBook book);
         void removeBook(IBook book);
         boolean checkUser();
