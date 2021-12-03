@@ -6,10 +6,7 @@ import com.IW.utils.Dialog;
 import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -20,13 +17,17 @@ public class LoginController {
     @FXML
     private TextField tf_name;
     @FXML
-    private MenuItem about;
+    private MenuItem mi_about;
     @FXML
     private PasswordField tf_passwd;
     @FXML
     private CheckMenuItem connect;
     @FXML
     private MenuItem close;
+    @FXML
+    private Button btn_register;
+    @FXML
+    private Button btn_login;
 
     @FXML
     protected void initialize() {
@@ -39,13 +40,18 @@ public class LoginController {
         tf_passwd.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) onClickLogin();
         });
-        about.setOnAction(event -> App.loadScene(new Stage(), "about", "Sobre Imagination Writer", true, false));
+        btn_login.setOnAction(event -> onClickLogin());
+        btn_register.setOnAction(event -> onClickRegister());
+        mi_about.setOnAction(event -> App.loadScene(new Stage(), "about", "Sobre Imagination Writer", true, false));
         connect.setOnAction(event -> {
             if(PersistenceUnit.isH2()){
                 PersistenceUnit.setInstance("MariaDB");
             }else{
                 PersistenceUnit.setInstance("H2");
             }
+        });
+        close.setOnAction(event -> {
+            App.closeScene((Stage) btn_register.getScene().getWindow());
         });
     }
 
@@ -56,12 +62,12 @@ public class LoginController {
         if (!tf_name.getText().trim().equals("") && !tf_passwd.getText().trim().equals("")) {
             //TODO lógica de negocio
             AuthorDAO a = new AuthorDAO();
-            //set nickname y setpassword con las contraseñas REMOVIENDO INTROS
+            //a.setName(tf_name.getText().replace("\n", ""));
+            //a.setPassword(tf_passwd.getText().replace("\n", ""));
             if (a.checkUser()) {
-                //cogemos el autor de la base de datos ya completo con "all"
-                //TODO descomentar esta línea cuando tengamos la vista
-                //App.closeScene((Stage) tf_name.getScene().getWindow());
-                //App.loadScene(new Stage(), "main", " Imagination Writer", true, true);
+                App.closeScene((Stage) tf_name.getScene().getWindow());
+                BooksController.setAuthor(a);
+                App.loadScene(new Stage(), "books", " Imagination Writer - Tus Libros", true, true);
                 tf_name.clear();
                 tf_passwd.clear();
             } else {
@@ -73,6 +79,13 @@ public class LoginController {
     private void menuItemsSetIcons(){
         close.setGraphic(Tools.getIcon("close"));
         connect.setGraphic(Tools.getIcon("cloud"));
-        about.setGraphic(Tools.getIcon("info"));
+        mi_about.setGraphic(Tools.getIcon("info"));
+    }
+
+    private void onClickRegister(){
+        AuthorDAO a = new AuthorDAO();
+        //RegisterAuthorController.setAuthor(a);
+        //App.loadScene(new Stage(), "register", " Imagination Writer - Registro", true, true);
+
     }
 }

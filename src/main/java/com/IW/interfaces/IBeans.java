@@ -25,6 +25,8 @@ public interface IBeans {
         void setParts(List<IPart> parts);
         List<ICharacter> getCharacters();
         void setCharacters(List<ICharacter> characters);
+        List<IScene> getScenes();
+        void setScenes(List<IScene> scenes);
         List<IAuthor> getAuthors();
         void setAuthors(List<IAuthor> authors);
         String getCover();
@@ -38,8 +40,8 @@ public interface IBeans {
         void setId(long id);
         int getNPage();
         void setNPage(int nPage);
-        IBook getBook();
-        void setBook(IBook book);
+        void setPart(IPart part);
+        IPart getPart();
         String getResume();
         void setResume(String resume);
         String getNote();
@@ -70,6 +72,8 @@ public interface IBeans {
         void setDescription(String description);
         String getPhoto();
         void setPhoto(String photo);
+        void setBook(IBook book);
+        IBook getBook();
     }
 
     interface IPart{
@@ -79,5 +83,7 @@ public interface IBeans {
         void setNPart(int nPart);
         List<IChapter> getChapters();
         void setChapters(List<IChapter> chapters);
+        IBook getBook();
+        void setBook(IBook book);
     }
 }

@@ -1,25 +1,36 @@
 package com.IW.model.objects;
 
 import com.IW.interfaces.IBeans.IScene;
+import com.IW.interfaces.IBeans.IBook;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
-
+@Entity
+@Table(name = "Scene")
 public class Scene implements Serializable, IScene{
 
 	@Serial
 	private static final long serialVersionUID = 1L;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	protected long id;
+	@Column(name = "title")
 	protected String title;
+	@Column(name = "description")
 	protected String description;
+	@Column(name = "photo")
 	protected String photo;
+	@ManyToOne
+	protected Book book;
 	
-	public Scene(long id, String title, String description, String photo) {
+	public Scene(long id, String title, String description, String photo, Book book) {
 		this.id = id;
 		this.title = title;
 		this.description = description;
 		this.photo = photo;
+		this.book = book;
 	}
 	public Scene() {}
 	@Override
@@ -54,5 +65,12 @@ public class Scene implements Serializable, IScene{
 	public void setPhoto(String photo) {
 		this.photo = photo;
 	}
-
+	@Override
+	public IBook getBook() {
+		return book;
+	}
+	@Override
+	public void setBook(IBook book) {
+		this.book = (Book)book;
+	}
 }

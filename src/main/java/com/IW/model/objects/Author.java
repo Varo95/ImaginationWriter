@@ -3,22 +3,34 @@ package com.IW.model.objects;
 import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.IBeans.IBook;
 
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-
+@Entity
+@Table(name = "Author")
 public class Author implements Serializable, IAuthor{
 
 	@Serial
 	private static final long serialVersionUID = 1L;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	protected long id;
+	@Column(name = "name")
 	protected String name;
+	@Column(name = "password")
 	protected String password;
+	@Column(name = "photo")
 	protected String photo;
-	protected List<IBook> books;
+	@JoinTable(name="author_book",
+			joinColumns = @JoinColumn(name="id_author",nullable=false),
+			inverseJoinColumns = @JoinColumn(name="id_book",nullable=false)
+	)
+	@ManyToMany(cascade=CascadeType.ALL)
+	protected List<Book> books;
 	
-	public Author(long id, String name, String password, String photo, List<IBook> books) {
+	public Author(long id, String name, String password, String photo, List<Book> books) {
 		this.id = id;
 		this.name = name;
 		this.password = password;
@@ -60,12 +72,18 @@ public class Author implements Serializable, IAuthor{
 		this.photo = photo;
 	}
 	@Override
-	public List<IBook> getBooks() {
+	public List<IBook> getBooks(){
+		return (List<IBook>)this._getBooks();
+	}
+	private List<? extends IBook> _getBooks() {
 		return books;
 	}
 	@Override
 	public void setBooks(List<IBook> books) {
-		this.books = books;
+		_setBooks(books);
+	}
+	private void _setBooks(List<? extends IBook> books){
+		this.books = (List<Book>)books;
 	}
 	
 	

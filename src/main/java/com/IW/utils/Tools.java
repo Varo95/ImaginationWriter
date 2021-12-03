@@ -109,7 +109,7 @@ public class Tools {
     //Para añadir nuevos iconos consultar la página de Microsoft-> https://docs.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
     //Añadir "\\u" al principio (al igual que el \n imprime salto de línea) para indicar que es un icono gráfico de Windows.
     public static MDL2IconFont getIcon(String value) {
-         MDL2IconFont result = switch (value) {
+        MDL2IconFont result = switch (value) {
             case "close" -> new MDL2IconFont("\uE711");
             case "cloud" -> {
                 result = new MDL2IconFont("\uE753");
@@ -119,6 +119,43 @@ public class Tools {
             case "info" -> {
                 result = new MDL2IconFont("\uE946");
                 result.setStyle("-fx-text-fill: lightblue;");
+                yield result;
+            }
+            case "arrow-next" -> {
+                result = new MDL2IconFont("\uF0D2");
+                result.setStyle("-fx-text-fill: lightblue;");
+                yield result;
+            }
+            case "arrow-back" -> {
+                result = new MDL2IconFont("\uF0D3");
+                result.setStyle("-fx-text-fill: lightblue;");
+                yield result;
+            }
+            case "add" -> {
+                result = new MDL2IconFont("\uECC8");
+                result.setStyle("-fx-text-fill: lightgreen;");
+                yield result;
+            }
+            case "remove" -> {
+                result = new MDL2IconFont("\uECC9");
+                result.setStyle("-fx-text-fill: red;");
+                yield result;
+            }
+            case "edit" -> {
+                result = new MDL2IconFont("\uEC87");
+                result.setStyle("-fx-text-fill: orange;");
+                yield result;
+            }
+            case "close-session"-> {
+                result = new MDL2IconFont("\uF3B1");
+                yield result;
+            }
+            case "book_chars" -> {
+                result = new MDL2IconFont("\uE726");
+                yield result;
+            }
+            case "book_scenes" -> {
+                result = new MDL2IconFont("\uE91B");
                 yield result;
             }
             default -> new MDL2IconFont("\uF16B");

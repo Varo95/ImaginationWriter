@@ -4,23 +4,34 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 
+import com.IW.interfaces.IBeans.IBook;
 import com.IW.interfaces.IBeans.IPart;
 import com.IW.interfaces.IBeans.IChapter;
 
+import javax.persistence.*;
+
+@Entity
 public class Part implements Serializable, IPart{
 
 	@Serial
 	private static final long serialVersionUID = 1L;
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	protected long id;
+	@Column(name ="nPart")
 	protected int nPart;
-	protected List<IChapter> chapters;
+	@OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
+	protected List<Chapter> chapters;
+	@ManyToOne
+	protected Book book;
 	
-	public Part(long id, int nPart, List<IChapter> chapters) {
+	public Part(long id, int nPart, List<Chapter> chapters, Book book) {
 		super();
 		this.id = id;
 		this.nPart = nPart;
 		this.chapters = chapters;
+		this.book = book;
 	}
 	
 	public Part() {}
@@ -42,11 +53,24 @@ public class Part implements Serializable, IPart{
 	}
 	@Override
 	public List<IChapter> getChapters() {
-		return chapters;
+		return (List<IChapter>) _getChapters();
+	}
+	private List<? extends IChapter> _getChapters(){
+		return this.chapters;
 	}
 	@Override
 	public void setChapters(List<IChapter> chapters) {
-		this.chapters = chapters;
+		this._setChapters(chapters);
 	}
-
+	private void _setChapters(List<? extends IChapter> chapters){
+		this.chapters = (List<Chapter>) chapters;
+	}
+	@Override
+	public IBook getBook() {
+		return book;
+	}
+	@Override
+	public void setBook(IBook book) {
+		this.book = (Book)book;
+	}
 }

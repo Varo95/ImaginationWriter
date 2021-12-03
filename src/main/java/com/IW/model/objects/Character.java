@@ -1,21 +1,29 @@
 package com.IW.model.objects;
 
 import com.IW.interfaces.IBeans.ICharacter;
-import com.IW.interfaces.IBeans.IBook;;import java.io.Serial;
+import com.IW.interfaces.IBeans.IBook;;import javax.persistence.*;
+import java.io.Serial;
 import java.io.Serializable;
-
+@Entity
+@Table(name = "Character")
 public class Character implements Serializable, ICharacter{
 
 	@Serial
 	private static final long serialVersionUID = 1L;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	protected long id;
+	@Column(name = "name")
 	protected String name;
+	@Column(name = "description")
 	protected String description;
+	@Column(name = "photo")
 	protected String photo;
-	protected IBook book;
+	@ManyToOne
+	protected Book book;
 	
-	public Character(long id, String name, String description, String photo, IBook book) {
+	public Character(long id, String name, String description, String photo, Book book) {
 		this.id = id;
 		this.name = name;
 		this.description = description;
@@ -62,7 +70,7 @@ public class Character implements Serializable, ICharacter{
 	}
 	@Override
 	public void setBook(IBook book) {
-		this.book = book;
+		this.book = (Book)book;
 	}
 
 }

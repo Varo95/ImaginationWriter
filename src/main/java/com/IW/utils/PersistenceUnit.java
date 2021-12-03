@@ -39,7 +39,7 @@ public class PersistenceUnit {
         if (emfMDB == null) {
             try {
                 emfMDB = Persistence.createEntityManagerFactory("ApplicationMariaDB");
-            }catch (PersistenceException e){
+            }catch (PersistenceException | IllegalStateException e){
                 logger.error("Sin nombre de proveedor de persistencia para EntityManager ApplicationMariaDB");
             }
         }
@@ -52,6 +52,7 @@ public class PersistenceUnit {
                 emfH2 = Persistence.createEntityManagerFactory("ApplicationH2");
             }catch (PersistenceException e){
                 logger.error("Sin nombre de proveedor de persistencia para EntityManager ApplicationH2");
+                e.printStackTrace();
             }
         }
         return emfH2;

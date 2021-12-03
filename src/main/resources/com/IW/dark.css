@@ -81,3 +81,41 @@
 .mfx-font-icon{
     -mfx-color: #ffffff
 }
+
+.ribbon > .outer-container > .tab-pane > .tab-content-area
+{
+    -fx-background-color: #cccccc, #373e43;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+.ribbon
+{
+    -fx-background: #373e43;
+
+
+    /************************* CSS Variables (Override to set your own theme) ****************************************/
+
+    H1_COLOR: #2796c4; /* @Deprecated: Use ACCENT_COLOR instead. This variable will be removed in a later version */
+    ACCENT_COLOR: H1_COLOR;
+
+    RIBBON_BUTTON_HIGHLIGHT_COLOR: derive(ACCENT_COLOR, 95%);
+    BUTTON_SELECTED_COLOR: derive(RIBBON_BUTTON_HIGHLIGHT_COLOR, -3%); /* @Deprecated: Use RIBBON_BUTTON_SELECTED_COLOR instead. This variable will be removed in a later version */
+    RIBBON_BUTTON_SELECTED_COLOR: BUTTON_SELECTED_COLOR; /* Used for buttons when they're selected */
+
+    /* Label color of controls inside the Ribbon */
+    CONTROLS_LABEL_COLOR: white;
+    /* Color for titles - tabs titles */
+    TITLES_COLOR: white;
+    /* Color for Ribbon group titles */
+    RIBBON_GROUP_TITLE: #767676;
+
+}
+.ribbon > .outer-container > .tab-pane > .tab-header-area > .headers-region > .tab {
+    -fx-background-color: transparent, transparent, #373e43;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+    -fx-padding: 0.083333em 1.25em 0.0769em 1.25em; /* 1 15 0.99 15 */
+}
+
+.ribbon > .outer-container > .tab-pane > .tab-header-area > .headers-region > .tab:selected {
+    -fx-background-color: transparent, #cccccc, #373e43;
+    -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+}
