@@ -223,6 +223,14 @@ public class Tools {
                 result = new MDL2IconFont("\uE71D");
                 yield result;
             }
+            case "book_chapter" -> {
+                result = new MDL2IconFont("\uE736");
+                yield result;
+            }
+            case "book_part" -> {
+                result = new MDL2IconFont("\uE74C");
+                yield result;
+            }
             default -> new MDL2IconFont("\uF16B");
         };
         return result;

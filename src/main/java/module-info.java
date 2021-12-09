@@ -12,6 +12,7 @@ module ImaginationWriter {
     requires org.jfxtras.styles.jmetro;
     requires org.hibernate.orm.core;
     requires org.hibernate.commons.annotations;
+    requires fxribbon;
 
     opens com.IW.controllers to javafx.fxml, javafx.controls, javafx.graphics, javafx.media, javafx.base, MaterialFX;
     opens com.IW.model.objects to org.hibernate.orm.core, org.hibernate.commons.annotations;

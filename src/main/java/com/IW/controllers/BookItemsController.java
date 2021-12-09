@@ -1,33 +1,52 @@
 package com.IW.controllers;
 
-import com.IW.interfaces.IBeans.ICharacter;
-import com.IW.interfaces.IBeans.IScene;
-import com.IW.model.dao.BookDAO;
-import com.IW.utils.Tools;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
+import com.IW.interfaces.IBeans.ICharacter;
+import com.IW.interfaces.IBeans.IScene;
+import com.IW.interfaces.IBeans.IBook;
+import com.IW.model.dao.BookDAO;
+import com.IW.model.dao.CharacterDAO;
+import com.IW.utils.Dialog;
+import com.IW.utils.Tools;
 
 import java.util.Objects;
 
 public class BookItemsController {
 
     @FXML
-    private Label lb_description;
-    @FXML
-    private ImageView iview_photo;
-    @FXML
     private TableView<ICharacter> table_items_characters;
-    @FXML
-    private TableView<IScene> table_items_scenes;
-    @FXML
-    private TableColumn<IScene, String> tc_items_scenes;
+
     @FXML
     private TableColumn<ICharacter, String> tc_items_characters;
+
+    @FXML
+    private ImageView iview_photo;
+
+    @FXML
+    private Label lb_description;
+
+    @FXML
+    private TableView<IScene> table_items_scenes;
+
+    @FXML
+    private TableColumn<IScene, String> tc_items_scenes;
+
+    @FXML
+    private Button btn_add_character;
+
+    @FXML
+    private Button btn_edit_character;
+
+    @FXML
+    private Button btn_delete_character;
 
     private static BookDAO current_book;
 
@@ -39,6 +58,53 @@ public class BookItemsController {
         configureTables();
         table_items_characters.setItems(FXCollections.observableList(current_book.getCharacters()));
         table_items_scenes.setItems(FXCollections.observableList(current_book.getScenes()));
+        btn_add_character.setOnAction(event -> {
+            CharacterDAO c = new CharacterDAO();
+            c.setName(Dialog.showDialogString("Nombre del nuevo personaje", "Nombre personaje", "Introduce el nuevo nombre del personaje"));
+            c.setDescription(Dialog.showDialogString("Descripción del nuevo personaje", "Descripción personaje", "Introduce descripción del personaje"));
+            String cover = Dialog.showDialogExamine("Foto personaje", "Selecciona el personaje", "Introduce la URL de la foto del personaje");
+            if (c.getName() != null) {
+                if (!cover.equals("")) {
+                    if (Tools.FileCopy(cover, "assets/books_characters/" + c.getName() + cover.substring(cover.lastIndexOf(".")))) {
+                        Dialog.showInformation("", "Exito al copiar la foto", "Hemos guardado una copia de tu foto en otra carpeta!");
+                        c.setPhoto("assets/books_characters/" + c.getName() + cover.substring(cover.lastIndexOf(".")));
+                    }
+                }
+                c.setBook(current_book);
+                c.persist();
+                table_items_characters.getItems().add(c);
+
+            }
+        });
+        btn_edit_character.setOnAction(event -> {
+            if (table_items_characters.getSelectionModel().getSelectedItem() != null) {
+                CharacterDAO c = new CharacterDAO(table_items_characters.getSelectionModel().getSelectedItem().getId());
+                c.setName(Dialog.showDialogString("Nombre del nuevo personaje", "Nombre personaje", c.getName()));
+                c.setDescription(Dialog.showDialogString("Descripción del nuevo personaje", "Descripción personaje", c.getDescription()));
+                String cover = Dialog.showDialogExamine("Foto personaje", "Selecciona el personaje", c.getPhoto());
+                if (c.getName() != null) {
+                    if (!cover.equals("")) {
+                        if (Tools.FileCopy(cover, "assets/books_characters/" + c.getName() + cover.substring(cover.lastIndexOf(".")))) {
+                            Dialog.showInformation("", "Exito al copiar la foto", "Hemos guardado una copia de tu foto en otra carpeta!");
+                            c.setPhoto("assets/books_characters/" + c.getName() + cover.substring(cover.lastIndexOf(".")));
+                        }
+                    }
+                    c.setBook(current_book);
+                    c.persist();
+                    table_items_characters.getItems().remove(c);
+                    table_items_characters.getItems().add(c);
+                }
+            }
+
+        });
+        btn_delete_character.setOnAction(event -> {
+            if (table_items_characters.getSelectionModel().getSelectedItem() != null) {
+                CharacterDAO c = new CharacterDAO(table_items_characters.getSelectionModel().getSelectedItem().getId());
+                c.remove();
+                table_items_characters.getItems().remove(c);
+            }
+        });
+        setIcons();
     }
 
     private void configureTables() {
@@ -52,6 +118,10 @@ public class BookItemsController {
         });
         table_items_characters.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                if (btn_edit_character.isDisabled() && btn_delete_character.isDisabled()) {
+                    btn_edit_character.setDisable(false);
+                    btn_delete_character.setDisable(false);
+                }
                 lb_description.setText(newValue.getDescription());
                 iview_photo.setImage(Objects.requireNonNullElseGet(Tools.getImage(newValue.getPhoto(), false), () -> Tools.getImage(default_photo_character, true)));
             }
@@ -60,5 +130,12 @@ public class BookItemsController {
 
     public static void setCurrent_book(BookDAO book) {
         current_book = book;
+    }
+
+    private void setIcons() {
+        btn_add_character.setGraphic(Tools.getIcon("add"));
+        btn_edit_character.setGraphic(Tools.getIcon("edit"));
+        btn_delete_character.setGraphic(Tools.getIcon("remove"));
+
     }
 }

@@ -60,7 +60,8 @@ public class AuthorDAO extends Author implements IAuthorDAO {
     public void remove() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
-        em.remove(this);
+        Author a = em.merge(this);
+        em.remove(a);
         em.getTransaction().commit();
         PersistenceUnit.closeEM();
     }
@@ -71,17 +72,19 @@ public class AuthorDAO extends Author implements IAuthorDAO {
         String encryptedUPwd = Tools.encryptSHA256(getPassword());
         String encryptedDBPwd = "";
         Author a;
+        em.getTransaction().begin();
         if (getId() != -1) {
             a = new AuthorDAO(getId());
             encryptedDBPwd = a.getPassword();
+            em.getTransaction().commit();
         } else {
-            em.getTransaction().begin();
             TypedQuery<Author> q = em.createNamedQuery("findByName", Author.class);
             q.setParameter("name", getName());
             try {
                 a = q.getSingleResult();
             } catch (NoResultException e) {
                 logger.error("Autor con nombre: "+getName()+ "\nNo encontrado");
+                PersistenceUnit.closeEM();
                 return false;
             }
             encryptedDBPwd = a.getPassword();

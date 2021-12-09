@@ -1,22 +1,22 @@
 package com.IW.controllers;
 
+import com.IW.App;
 import com.IW.interfaces.IBeans.IChapter;
 import com.IW.interfaces.IBeans.IPart;
 import com.IW.model.dao.BookDAO;
 import com.IW.model.dao.ChapterDAO;
 import com.IW.model.dao.PartDAO;
-import com.IW.model.objects.Chapter;
-import com.IW.model.objects.Part;
-import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
+import com.pixelduke.control.ribbon.RibbonItem;
+import com.pixelduke.control.ribbon.RibbonTab;
 import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,40 +34,57 @@ public class EditorController {
     private ComboBox<IChapter> cb_chapters;
     @FXML
     private TextArea ta_chapter;
+    @FXML
+    private RibbonItem chapter_item;
+    @FXML
+    private RibbonItem part_item;
+    @FXML
+    private Button btn_book_items;
+    @FXML
+    private RibbonTab tab_chapter;
+    @FXML
+    private TextArea ta_note_chapter;
+    @FXML
+    private TextArea ta_resume_chapter;
+    @FXML
+    private Button btn_save_resume;
+    @FXML
+    private Button btn_save_note;
 
     private static BookDAO current_book;
+    private static ChapterDAO current_chapter;
+    private static PartDAO current_part;
     private Timer auto_save;
     private TimerTask tt_autosave;
 
     @FXML
     protected void initialize() {
-        //SampleData
-        PersistenceUnit.setType("H2");
-        PersistenceUnit.changeConnection();
-        current_book = new BookDAO();
-        current_book.setTitle("Hola");
-        Chapter cp = new Chapter();
-        cp.setNPage(1);
-        Chapter cp1 = new Chapter();
-        cp1.setNPage(2);
-        Part p = new Part();
-        p.setNPart(1);
-        p.setBook(current_book);
-        Part c = new Part();
-        c.setNPart(2);
-        c.setBook(current_book);
-        p.setChapters(List.of(cp, cp1));
-        c.setChapters(List.of(cp));
-        cp.setText("Hola esto es una prueba");
-        current_book.setParts(List.of(c, p));
-        current_book.persist();
+        createPartAndChapterIfNoOne();
         configureTreeTableAndComboBox();
         setIcons();
         setAutosave();
-        btn_controlPC.getScene().getWindow().setOnCloseRequest(event -> {
-            if (auto_save != null) {
-                tt_autosave.cancel();
-                auto_save.cancel();
+        Platform.runLater(() -> {
+            btn_controlPC.getScene().getWindow().setOnCloseRequest(event -> {
+                if (auto_save != null) {
+                    tt_autosave.cancel();
+                    auto_save.cancel();
+                }
+            });
+        });
+        btn_book_items.setOnAction(event -> {
+            BookItemsController.setCurrent_book(current_book);
+            App.loadScene(new Stage(), "book_items", " Imagination Writer - " + current_book.getTitle(), true, false);
+        });
+        btn_save_note.setOnAction(event -> {
+            if(current_chapter!=null){
+                current_chapter.setNote(ta_note_chapter.getText());
+                current_chapter.persist();
+            }
+        });
+        btn_save_resume.setOnAction(event -> {
+            if(current_chapter!=null){
+                current_chapter.setResume(ta_resume_chapter.getText());
+                current_chapter.persist();
             }
         });
     }
@@ -87,14 +104,24 @@ public class EditorController {
         cb_parts.setItems(FXCollections.observableList(current_book.getParts()));
         cb_parts.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                current_part = new PartDAO(newValue.getId());
                 cb_chapters.setItems(FXCollections.observableList(newValue.getChapters()));
-                //TODO actualizar cosas de las partes
             }
         });
         cb_chapters.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                ta_chapter.setText(newValue.getText());
-                //TODO actualizar cosas de los capítulos
+                current_chapter = new ChapterDAO(newValue.getId());
+                if(ta_chapter.isDisabled() && tab_chapter.isDisabled() && ta_resume_chapter.isDisabled()){
+                    ta_chapter.setDisable(false);
+                    tab_chapter.setDisable(false);
+                    ta_resume_chapter.setDisable(false);
+                    ta_note_chapter.setDisable(false);
+                    btn_save_resume.setDisable(false);
+                    btn_save_note.setDisable(false);
+                }
+                ta_note_chapter.setText(current_chapter.getNote());
+                ta_resume_chapter.setText(current_chapter.getResume());
+                ta_chapter.setText(current_chapter.getText());
             }
         });
         cb_parts.setConverter(new StringConverter<>() {
@@ -136,7 +163,21 @@ public class EditorController {
         tt_autosave = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> current_book.persist());
+                Platform.runLater(() -> {
+                    if(current_chapter!=null) {
+                        current_chapter.setText(ta_chapter.getText());
+                        current_chapter.setResume(ta_resume_chapter.getText());
+                        current_chapter.setNote(ta_note_chapter.getText());
+                        current_chapter.setPart(current_part);
+                        current_chapter.persist();
+                    }
+                    if(current_part!=null) {
+                        current_part.setBook(current_book);
+                        current_part.persist();
+                    }
+                    if(current_book!=null)
+                        current_book.persist();
+                });
             }
         };
         auto_save.schedule(tt_autosave, 0, 30000);
@@ -144,6 +185,26 @@ public class EditorController {
 
     private void setIcons() {
         btn_controlPC.setGraphic(Tools.getIcon("list-cp"));
+        chapter_item.setGraphic(Tools.getIcon("book_chapter"));
+        btn_book_items.setGraphic(Tools.getIcon("book_scenes"));
+        part_item.setGraphic(Tools.getIcon("book_part"));
+    }
+
+    /**
+     * This is called at the first time and add part 1 and chapter 1 to the book
+     */
+    private void createPartAndChapterIfNoOne(){
+        if(current_book.getParts().size()==0){
+            PartDAO p = new PartDAO();
+            p.setId(-1);
+            p.setNPart(1);
+            ChapterDAO c = new ChapterDAO();
+            c.setId(-1);
+            c.setNPage(1);
+            p.getChapters().add(c);
+            current_book.getParts().add(p);
+            current_book.persist();
+        }
     }
 
     public static void setBook(BookDAO book) {

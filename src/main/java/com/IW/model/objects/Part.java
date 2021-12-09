@@ -17,14 +17,14 @@ public class Part implements Serializable, IPart {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected long id;
     @Column(name = "nPart")
     protected int nPart;
     @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
     protected List<Chapter> chapters;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Book book;
 
     public Part(long id, int nPart, List<Chapter> chapters, Book book) {
@@ -91,5 +91,13 @@ public class Part implements Serializable, IPart {
     @Override
     public String toCombobox(){
         return "Parte: "+this.nPart + "."+this.id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Part part = (Part) o;
+        return id == part.id;
     }
 }

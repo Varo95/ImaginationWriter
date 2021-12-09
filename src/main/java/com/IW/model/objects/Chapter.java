@@ -14,12 +14,12 @@ public class Chapter implements Serializable, IChapter {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected long id;
     @Column(name = "nPage")
     protected int nPage;
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Part part;
     @Column(name = "resume")
     protected String resume;
@@ -104,6 +104,14 @@ public class Chapter implements Serializable, IChapter {
     @Override
     public String toCombobox(){
         return "Capítulo: "+this.nPage + "."+this.id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chapter chapter = (Chapter) o;
+        return id == chapter.id;
     }
 
 }

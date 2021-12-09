@@ -36,6 +36,7 @@ public class PartDAO extends Part implements IPartDAO {
     public PartDAO(){
         super();
     }
+
     @Override
     public void persist() {
         EntityManager em = PersistenceUnit.createEM();
@@ -54,7 +55,8 @@ public class PartDAO extends Part implements IPartDAO {
     public void remove() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
-        em.remove(this);
+        Part p = em.merge(this);
+        em.remove(p);
         em.getTransaction().commit();
         PersistenceUnit.closeEM();
     }

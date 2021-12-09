@@ -12,7 +12,7 @@ public class Character implements Serializable, ICharacter {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected long id;
     @Column(name = "name")
@@ -21,7 +21,7 @@ public class Character implements Serializable, ICharacter {
     protected String description;
     @Column(name = "photo")
     protected String photo;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Book book;
 
     public Character(long id, String name, String description, String photo, Book book) {
@@ -84,6 +84,14 @@ public class Character implements Serializable, ICharacter {
     @Override
     public void setBook(IBook book) {
         this.book = (Book) book;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Character character = (Character) o;
+        return id == character.id;
     }
 
 }

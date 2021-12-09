@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class ChapterDAO extends Chapter implements IChapterDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(BookDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(ChapterDAO.class);
 
     public ChapterDAO(long id){
         Chapter c = null;
@@ -57,7 +57,8 @@ public class ChapterDAO extends Chapter implements IChapterDAO {
     public void remove() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
-        em.remove(this);
+        Chapter c = em.merge(this);
+        em.remove(c);
         em.getTransaction().commit();
         PersistenceUnit.closeEM();
     }

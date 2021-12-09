@@ -14,7 +14,7 @@ public class Scene implements Serializable, IScene {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected long id;
     @Column(name = "title")
@@ -23,7 +23,7 @@ public class Scene implements Serializable, IScene {
     protected String description;
     @Column(name = "photo")
     protected String photo;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Book book;
 
     public Scene(long id, String title, String description, String photo, Book book) {
@@ -86,5 +86,13 @@ public class Scene implements Serializable, IScene {
     @Override
     public void setBook(IBook book) {
         this.book = (Book) book;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Scene scene = (Scene) o;
+        return id == scene.id;
     }
 }

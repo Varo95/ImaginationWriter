@@ -20,7 +20,7 @@ public class Book implements Serializable, IBook {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     protected long id;
     @Column(name = "title")
@@ -182,6 +182,14 @@ public class Book implements Serializable, IBook {
     @Transient
     public void setNPages(int nPages) {
         this.nPages = nPages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id;
     }
 
 }

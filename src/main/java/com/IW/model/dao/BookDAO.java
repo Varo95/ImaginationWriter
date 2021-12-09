@@ -60,7 +60,8 @@ public class BookDAO extends Book implements IBookDAO {
     public void remove() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
-        em.remove(this);
+        Book b = em.merge(this);
+        em.remove(b);
         em.getTransaction().commit();
         PersistenceUnit.closeEM();
     }

@@ -108,6 +108,7 @@ public class BooksController {
                 if (table_books.getSelectionModel().getSelectedItem().getCreator().equals(actual_author)) {
                     BookDAO b = new BookDAO(table_books.getSelectionModel().getSelectedItem().getId());
                     b.remove();
+                    table_books.getItems().remove(b);
                 } else {
                     Dialog.showError("Error", "Este libro no es tuyo", "No puedes borrar un libro que no es tuyo");
                 }
