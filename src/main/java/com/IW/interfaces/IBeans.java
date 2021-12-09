@@ -4,86 +4,94 @@ import java.util.List;
 
 public interface IBeans {
     interface IAuthor{
-        long getId();
         void setId(long id);
-        String getPassword();
-        void setPassword(String password);
-        List<IBook> getBooks();
-        void setBooks(List<IBook> books);
-        String getName();
         void setName(String name);
-        String getPhoto();
+        void setPassword(String password);
+        void setBooks(List<IBook> books);
         void setPhoto(String photo);
+
+        long getId();
+        String getPassword();
+        List<IBook> getBooks();
+        String getName();
+        String getPhoto();
     }
 
     interface IBook{
-        long getId();
         void setId(long id);
-        String getTitle();
         void setTitle(String title);
-        List<IPart> getParts();
         void setParts(List<IPart> parts);
-        List<ICharacter> getCharacters();
         void setCharacters(List<ICharacter> characters);
-        List<IScene> getScenes();
         void setScenes(List<IScene> scenes);
-        List<IAuthor> getAuthors();
-        void setAuthors(List<IAuthor> authors);
-        String getCover();
+        void setEditors(List<IAuthor> authors);
         void setCover(String cover);
-        int getNPages();
         void setNPages(int nPages);
+        void setCreator(IAuthor creator);
+
+        long getId();
+        String getTitle();
+        List<IPart> getParts();
+        List<ICharacter> getCharacters();
+        List<IScene> getScenes();
+        List<IAuthor> getEditors();
+        String getCover();
+        int getNPages();
+        IAuthor getCreator();
     }
 
     interface IChapter{
-        long getId();
         void setId(long id);
-        int getNPage();
         void setNPage(int nPage);
         void setPart(IPart part);
-        IPart getPart();
-        String getResume();
         void setResume(String resume);
-        String getNote();
         void setNote(String note);
         void setText(String text);
+
+        long getId();
+        int getNPage();
+        IPart getPart();
+        String getResume();
+        String getNote();
         String getText();
     }
 
     interface ICharacter{
-        long getId();
         void setId(long id);
-        String getName();
         void setName(String name);
-        String getDescription();
         void setDescription(String description);
-        String getPhoto();
         void setPhoto(String photo);
-        IBook getBook();
         void setBook(IBook book);
+
+        long getId();
+        String getName();
+        String getDescription();
+        String getPhoto();
+        IBook getBook();
     }
 
     interface IScene{
         long getId();
-        void setId(long id);
-        String getTitle();
         void setTitle(String title);
-        String getDescription();
         void setDescription(String description);
-        String getPhoto();
         void setPhoto(String photo);
+        void setId(long id);
         void setBook(IBook book);
+
+        String getTitle();
+        String getDescription();
+        String getPhoto();
         IBook getBook();
     }
 
     interface IPart{
-        long getId();
         void setId(long id);
-        int getNPart();
         void setNPart(int nPart);
-        List<IChapter> getChapters();
         void setChapters(List<IChapter> chapters);
-        IBook getBook();
         void setBook(IBook book);
+
+        long getId();
+        int getNPart();
+        List<IChapter> getChapters();
+        IBook getBook();
     }
 }

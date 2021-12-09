@@ -58,8 +58,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="btn_login" style="-fx-background-color: #64b5f6;" text="Entrar" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Button fx:id="btn_register" style="-fx-background-color: #81c784;" text="Registrarse" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="btn_login" style="-fx-background-color: #64b5f6;" text="Entrar" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
          <opaqueInsets>
             <Insets />

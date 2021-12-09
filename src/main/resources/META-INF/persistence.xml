@@ -8,6 +8,7 @@
             <property name="javax.persistence.jdbc.user" value="sa" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
             <!--TODO cambiar a validate-->
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <!--TODO quitar antes de entregar el proyecto-->
@@ -21,6 +22,7 @@
             <property name="javax.persistence.jdbc.user" value="root" />
             <property name="javax.persistence.jdbc.password" value="" />
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
+            <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
             <!--TODO cambiar a validate-->
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
             <!--TODO quitar antes de entregar el proyecto-->

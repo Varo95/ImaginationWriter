@@ -1,7 +1,7 @@
 package com.IW.utils;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.util.Optional;
@@ -61,5 +61,33 @@ public class Dialog {
         alert.setContentText(description);
         alert.showAndWait();
         return alert.getResult().getButtonData().isDefaultButton();
+    }
+    /**
+     * This dialog shows a textfield with a button to examine and return the text that are in textfield
+     *
+     * @param title       title of the dialog
+     * @param header      the content of the dialog
+     * @param description the description of the dialog
+     * @return null if closed or press Cancel, otherwhise the string the text on textfield
+     */
+    public static String showDialogExamine(String title, String header, String description){
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+        Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(description);
+        TextField tf_url = new TextField();
+        tf_url.setPromptText("URL de la Imagen");
+        Button examine = new Button("Examinar");
+        examine.setOnAction(event -> {
+            tf_url.setText(Tools.selectImageFile());
+        });
+        GridPane p = new GridPane();
+        p.addColumn(0,examine);
+        p.addColumn(1,tf_url);
+        p.hgapProperty().setValue(5);
+        dialog.getDialogPane().setContent(p);
+        dialog.showAndWait();
+        return tf_url.getText();
     }
 }

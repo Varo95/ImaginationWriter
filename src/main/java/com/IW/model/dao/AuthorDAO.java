@@ -1,67 +1,111 @@
 package com.IW.model.dao;
 
-import com.IW.interfaces.IBeans;
+import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.SQL.IAuthorDAO;
 import com.IW.model.objects.Author;
 import com.IW.utils.PersistenceUnit;
+import com.IW.utils.Tools;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityManager;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
-//TODO poner extends y implements
-public class AuthorDAO  {
-    //TODO cambiar el EM
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+public class AuthorDAO extends Author implements IAuthorDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthorDAO.class);
+
+    public AuthorDAO(long id) {
+        Author a = null;
+        EntityManager em = PersistenceUnit.createEM();
+        em.getTransaction().begin();
+        try {
+            a = em.find(Author.class, id);
+            if (a != null) {
+                this.setId(a.getId());
+                this.setName(a.getName());
+                this.setPhoto(a.getPhoto());
+                if(a.getBooks()!=null)
+                    this.setBooks(a.getBooks());
+            }
+        } catch (NoResultException e) {
+            logger.error("Autor con id: " + id + "\nNo encontrado en la base de datos");
+        }
+        PersistenceUnit.closeEM();
+    }
+
+    public AuthorDAO() {
+        super();
+    }
+
+    @Override
     public void persist() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
-        em.persist(this);
+        setPassword(Tools.encryptSHA256(getPassword()));
+        Author a = em.merge(this);
+        em.persist(a);
+        if (getId() == -1) {
+            em.flush();
+            setId(a.getId());
+        }
         em.getTransaction().commit();
+        PersistenceUnit.closeEM();
     }
 
-
+    @Override
     public void remove() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
         em.remove(this);
         em.getTransaction().commit();
+        PersistenceUnit.closeEM();
     }
 
+    @Override
     public boolean checkUser() {
-        /*String encryptedUPwd = Tools.encryptSHA256(getPassword());
-        List<Object> params = new ArrayList<>();
-        String encryptedDBPwd="";
-        if(getId()!=-1){
-            params.add(getId());
+        EntityManager em = PersistenceUnit.createEM();
+        String encryptedUPwd = Tools.encryptSHA256(getPassword());
+        String encryptedDBPwd = "";
+        Author a;
+        if (getId() != -1) {
+            a = new AuthorDAO(getId());
+            encryptedDBPwd = a.getPassword();
+        } else {
+            em.getTransaction().begin();
+            TypedQuery<Author> q = em.createNamedQuery("findByName", Author.class);
+            q.setParameter("name", getName());
             try {
-                ResultSet rs = SQL.execQuery(querys.GETPASSWORD_BY_ID.getQ(), params);
-                if (rs != null) {
-                    while (rs.next()) {
-                        encryptedDBPwd = rs.getString("passwd");
-                    }
-                }
-            }catch (SQLException e){
-                logger.error("Hubo un error al intentar recuperar la contraseña del usuario por el id. Con el mensaje:\n"+e.getMessage());
+                a = q.getSingleResult();
+            } catch (NoResultException e) {
+                logger.error("Autor con nombre: "+getName()+ "\nNo encontrado");
+                return false;
             }
-        }else{
-            params.add(userToCheck.getName());
-            try {
-                ResultSet rs = SQL.execQuery(querys.GETPASSWORD_BY_NAME.getQ(), params);
-                if (rs != null) {
-                    while (rs.next()) {
-                        encryptedDBPwd = rs.getString("passwd");
-                        userToCheck.setId(rs.getLong("id"));
-                    }
-                }
-            }catch (SQLException e){
-                logger.error("Hubo un error al intentar recuperar la contraseña del usuario con el nombre. Con el mensaje:\n"+e.getMessage());
-            }
+            encryptedDBPwd = a.getPassword();
+            setPassword(a.getPassword());
+            setId(a.getId());
+            setName(a.getName());
+            setPhoto(a.getPhoto());
+            if(a.getBooks()!=null)
+                setBooks(a.getBooks());
+            em.getTransaction().commit();
         }
-        return encryptedUPwd.equals(encryptedDBPwd);*/
-        return false;
+        PersistenceUnit.closeEM();
+        return encryptedUPwd.equals(encryptedDBPwd);
     }
 
+    //UTILIDADES
 
-    public List<IBeans.IBook> getBooks() {
-        return null;
+    public static List<IAuthor> listAll() {
+        EntityManager em = PersistenceUnit.createEM();
+        em.getTransaction().begin();
+        TypedQuery<Author> q = em.createNamedQuery("listAll", Author.class);
+        List<IAuthor> result = new ArrayList<>(q.getResultList());
+        em.getTransaction().commit();
+        PersistenceUnit.closeEM();
+        return result;
     }
 }

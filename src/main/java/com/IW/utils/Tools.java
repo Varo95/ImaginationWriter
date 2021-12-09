@@ -2,12 +2,17 @@ package com.IW.utils;
 
 import com.IW.App;
 import javafx.scene.image.Image;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import jfxtras.styles.jmetro.MDL2IconFont;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
@@ -17,6 +22,7 @@ public class Tools {
 
     private static final Logger logger = LoggerFactory.getLogger(Tools.class);
     private static final String URL_IMG_EXPRESSION = "(http)?s?:?(\\/\\/[^\"']*\\.(?:bmp|gif|jpg|jpeg|png))";
+    public static final Image default_photo_cover = getImage("icon.png", true);
 
     /**
      * This method is used to set the icon and css
@@ -65,6 +71,8 @@ public class Tools {
      * @return the Image from the resources loaded
      */
     public static Image getImage(String resPath, boolean isResPath) {
+        if(resPath == null)
+            return null;
         if (isResPath)
             return new Image(Objects.requireNonNull(App.class.getResourceAsStream(resPath)));
         else {
@@ -103,6 +111,47 @@ public class Tools {
     }
 
     /**
+     * This method is used to copy sources to a .jar path level
+     *
+     * @param source source file in
+     * @param target target file out
+     * @return true if success
+     */
+    public static boolean FileCopy(String source, String target) {
+        boolean result;
+        try {
+            File f = new File(target);
+            if (!Files.exists(f.toPath())) {
+                Files.createDirectories(f.toPath());
+            }
+            Files.copy(Paths.get(source), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
+            result = true;
+        } catch (IOException e) {
+            logger.error("Error al copiar ficheros, con el mensaje:\n" + e.getMessage());
+            result = false;
+        }
+        return result;
+    }
+
+    /**
+     * This method retrieves the URI absolute path of a file selected on a SYSTEM window
+     *
+     * @return the absolute path of the file image
+     */
+    public static String selectImageFile() {
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.bmp", "*.gif", "*.jpg", "*.jpeg", "*.png"));
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        File selectedFile = fc.showOpenDialog(null);
+        if (selectedFile != null) {
+            return selectedFile.getAbsolutePath();
+        } else {
+            Dialog.showWarning("Advertencia", "", "Fichero no seleccionado!");
+            return null;
+        }
+    }
+
+    /**
      * This method is used to get icons and put them into a window, making less code and more readable to coders
      * Codes are extracted from Microsoft official page -> https://docs.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
      */
@@ -122,12 +171,12 @@ public class Tools {
                 yield result;
             }
             case "arrow-next" -> {
-                result = new MDL2IconFont("\uF0D2");
+                result = new MDL2IconFont("\uF0D3");
                 result.setStyle("-fx-text-fill: lightblue;");
                 yield result;
             }
             case "arrow-back" -> {
-                result = new MDL2IconFont("\uF0D3");
+                result = new MDL2IconFont("\uF0D2");
                 result.setStyle("-fx-text-fill: lightblue;");
                 yield result;
             }
@@ -156,6 +205,18 @@ public class Tools {
             }
             case "book_scenes" -> {
                 result = new MDL2IconFont("\uE91B");
+                yield result;
+            }
+            case "profile" -> {
+                result = new MDL2IconFont("\uE77B");
+                yield result;
+            }
+            case "lock-locked" -> {
+                result = new MDL2IconFont("\uE72E");
+                yield result;
+            }
+            case "lock-unlocked" -> {
+                result = new MDL2IconFont("\uE785");
                 yield result;
             }
             default -> new MDL2IconFont("\uF16B");

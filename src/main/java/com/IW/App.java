@@ -1,6 +1,7 @@
 package com.IW;
 
 import com.IW.utils.Dialog;
+import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -59,5 +60,6 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+        PersistenceUnit.closeAllConnections();
     }
 }

@@ -15,5 +15,6 @@ module ImaginationWriter {
 
     opens com.IW.controllers to javafx.fxml, javafx.controls, javafx.graphics, javafx.media, javafx.base, MaterialFX;
     opens com.IW.model.objects to org.hibernate.orm.core, org.hibernate.commons.annotations;
+    opens com.IW.model.dao to org.hibernate.orm.core, org.hibernate.commons.annotations;
     exports com.IW;
 }
