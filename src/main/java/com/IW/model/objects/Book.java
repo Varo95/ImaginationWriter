@@ -2,6 +2,7 @@ package com.IW.model.objects;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.IW.interfaces.IBeans.IBook;
@@ -58,6 +59,7 @@ public class Book implements Serializable, IBook {
 
     public Book() {
         this.id = -1;
+        this.parts = new ArrayList<>();
     }
 
     @Override

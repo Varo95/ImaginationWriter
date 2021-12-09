@@ -38,6 +38,7 @@ public class Chapter implements Serializable, IChapter {
     }
 
     public Chapter() {
+        this.id = -1;
     }
 
     @Override
@@ -98,6 +99,11 @@ public class Chapter implements Serializable, IChapter {
     @Override
     public void setText(String text) {
         this.text = text;
+    }
+
+    @Override
+    public String toCombobox(){
+        return "Capítulo: "+this.nPage + "."+this.id;
     }
 
 }

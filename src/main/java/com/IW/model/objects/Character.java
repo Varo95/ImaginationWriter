@@ -33,6 +33,7 @@ public class Character implements Serializable, ICharacter {
     }
 
     public Character() {
+        this.id = -1;
     }
 
     @Override

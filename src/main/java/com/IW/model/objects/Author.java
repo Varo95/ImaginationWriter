@@ -108,11 +108,4 @@ public class Author implements Serializable, IAuthor {
         Author author = (Author) o;
         return id == author.id;
     }
-    public static void holamundo(){
-
-    }
-
-    public void hola(){
-
-    }
 }

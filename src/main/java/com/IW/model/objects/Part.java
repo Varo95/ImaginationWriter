@@ -2,6 +2,7 @@ package com.IW.model.objects;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.IW.interfaces.IBeans.IBook;
@@ -35,6 +36,8 @@ public class Part implements Serializable, IPart {
     }
 
     public Part() {
+        this.id = -1;
+        this.chapters = new ArrayList<>();
     }
 
     @Override
@@ -83,5 +86,10 @@ public class Part implements Serializable, IPart {
     @Override
     public void setBook(IBook book) {
         this.book = (Book) book;
+    }
+
+    @Override
+    public String toCombobox(){
+        return "Parte: "+this.nPart + "."+this.id;
     }
 }

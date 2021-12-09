@@ -219,6 +219,10 @@ public class Tools {
                 result = new MDL2IconFont("\uE785");
                 yield result;
             }
+            case "list-cp" -> {
+                result = new MDL2IconFont("\uE71D");
+                yield result;
+            }
             default -> new MDL2IconFont("\uF16B");
         };
         return result;

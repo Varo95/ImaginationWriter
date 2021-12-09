@@ -53,6 +53,7 @@ public interface IBeans {
         String getResume();
         String getNote();
         String getText();
+        String toCombobox();
     }
 
     interface ICharacter{
@@ -93,5 +94,6 @@ public interface IBeans {
         int getNPart();
         List<IChapter> getChapters();
         IBook getBook();
+        String toCombobox();
     }
 }

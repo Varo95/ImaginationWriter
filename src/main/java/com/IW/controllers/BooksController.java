@@ -64,19 +64,19 @@ public class BooksController {
                 }
                 btn_delete_book.setDisable(!newValue.getCreator().equals(actual_author));
                 iview_book_cover.setImage(Objects.requireNonNullElse(Tools.getImage(newValue.getCover(), false), Tools.default_photo_cover));
-                if(newValue.getEditors()!=null)
+                if (newValue.getEditors() != null)
                     table_authors.setItems(FXCollections.observableList(newValue.getEditors()));
                 btn_delete_author.setDisable(newValue.getCreator().equals(actual_author));
                 table_authors.getItems().clear();
-                if(newValue.getEditors()!=null)
+                if (newValue.getEditors() != null)
                     table_authors.getItems().addAll(newValue.getEditors());
                 table_authors.getItems().add(newValue.getCreator());
                 btn_add_author.setDisable(table_all_authors.getItems().size() == 0);
             }
         });
         table_authors.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null){
-                if(btn_delete_author.isDisabled()){
+            if (newValue != null) {
+                if (btn_delete_author.isDisabled()) {
                     btn_delete_book.setDisable(false);
                 }
             }
@@ -84,9 +84,9 @@ public class BooksController {
         btn_add_book.setOnAction(event -> {
             BookDAO b = new BookDAO();
             b.setTitle(Dialog.showDialogString("Titulo del nuevo libro", "Titulo Libro", "Introduce el nuevo titulo del libro"));
-            String cover = Dialog.showDialogExamine("Portada del libro", "Selecciona la portada","Introduce la URL de la foto del libro");
-            if(b.getTitle()!=null){
-                if(!cover.equals("")){
+            String cover = Dialog.showDialogExamine("Portada del libro", "Selecciona la portada", "Introduce la URL de la foto del libro");
+            if (b.getTitle() != null) {
+                if (!cover.equals("")) {
                     if (Tools.FileCopy(cover, "assets/books_covers/" + b.getTitle() + cover.substring(cover.lastIndexOf(".")))) {
                         Dialog.showInformation("", "Exito al copiar la foto", "Hemos guardado una copia de tu foto en otra carpeta!");
                         b.setCover("assets/books_covers/" + b.getTitle() + cover.substring(cover.lastIndexOf(".")));
@@ -99,43 +99,43 @@ public class BooksController {
         });
         btn_edit_book.setOnAction(event -> {
             if (table_books.getSelectionModel().getSelectedItem() != null) {
-                //EditorController.setBook(table_books.getSelectionModel().getSelectedItem())
-                //App.loadScene(...)
+                EditorController.setBook(new BookDAO(table_books.getSelectionModel().getSelectedItem().getId()));
+                App.loadScene(new Stage(), "editor", " Imagination Writer - " + table_books.getSelectionModel().getSelectedItem().getTitle(), false, true);
             }
         });
         btn_delete_book.setOnAction(event -> {
             if (table_books.getSelectionModel().getSelectedItem() != null) {
-                if(table_books.getSelectionModel().getSelectedItem().getCreator().equals(actual_author)){
+                if (table_books.getSelectionModel().getSelectedItem().getCreator().equals(actual_author)) {
                     BookDAO b = new BookDAO(table_books.getSelectionModel().getSelectedItem().getId());
                     b.remove();
-                }else{
-                    Dialog.showError("Error","Este libro no es tuyo","No puedes borrar un libro que no es tuyo");
+                } else {
+                    Dialog.showError("Error", "Este libro no es tuyo", "No puedes borrar un libro que no es tuyo");
                 }
             }
         });
         btn_add_author.setOnAction(event -> {
             if (table_books.getSelectionModel().getSelectedItem() != null) {
                 BookDAO b = new BookDAO(table_books.getSelectionModel().getSelectedItem().getId());
-                if(table_all_authors.getSelectionModel().getSelectedItem()!=null) {
+                if (table_all_authors.getSelectionModel().getSelectedItem() != null) {
                     AuthorDAO a = new AuthorDAO(table_all_authors.getSelectionModel().getSelectedItem().getId());
-                    //b.addAuthor(a);
+                    b.addAuthor(a);
                     b.persist();
                     table_authors.getItems().add(a);
-                }else{
-                    Dialog.showError("Error","Autor no seleccionado","No has seleccionado ningún autor en la tabla de todos los autores");
+                } else {
+                    Dialog.showError("Error", "Autor no seleccionado", "No has seleccionado ningún autor en la tabla de todos los autores");
                 }
             }
         });
         btn_delete_author.setOnAction(event -> {
             if (table_authors.getSelectionModel().getSelectedItem() != null && table_books.getSelectionModel().getSelectedItem() != null) {
                 BookDAO b = new BookDAO(table_books.getSelectionModel().getSelectedItem().getId());
-                if(table_all_authors.getSelectionModel().getSelectedItem()!=null) {
+                if (table_all_authors.getSelectionModel().getSelectedItem() != null) {
                     AuthorDAO a = new AuthorDAO(table_all_authors.getSelectionModel().getSelectedItem().getId());
-                    //b.removeAuthor(a);
+                    b.deleteAuthor(a);
                     b.persist();
                     table_authors.getItems().remove(a);
-                }else{
-                    Dialog.showError("Error","Autor no seleccionado","No has seleccionado ningún autor en la tabla de todos los autores");
+                } else {
+                    Dialog.showError("Error", "Autor no seleccionado", "No has seleccionado ningún autor en la tabla de todos los autores");
                 }
             }
         });
@@ -163,33 +163,6 @@ public class BooksController {
     }
 
     private void addTableBookButtons() {
-        TableColumn<IBook, Void> tc_book_chars = new TableColumn<>("");
-        tc_book_chars.setStyle("-fx-alignment: CENTER;");
-        Callback<TableColumn<IBook, Void>, TableCell<IBook, Void>> btn_chars = new Callback<>() {
-            @Override
-            public TableCell<IBook, Void> call(final TableColumn<IBook, Void> param) {
-                return new TableCell<>() {
-                    private final Button btn = new Button();
-
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            btn.setGraphic(Tools.getIcon("book_chars"));
-                            btn.setOnAction((ActionEvent event) -> {
-                                //TODO lanzar la vista de ver personajes con el libro
-                                //CharView.setChars(getTableView().getItems().get(getIndex()).getCharacters());
-                                //App.loadScene(...)
-                            });
-                            btn.setStyle("-fx-background-color: lightblue");
-                            setGraphic(btn);
-                        }
-                    }
-                };
-            }
-        };
         TableColumn<IBook, Void> tc_book_scenes = new TableColumn<>("");
         tc_book_scenes.setStyle("-fx-alignment: CENTER;");
         Callback<TableColumn<IBook, Void>, TableCell<IBook, Void>> btn_scenes = new Callback<>() {
@@ -206,9 +179,9 @@ public class BooksController {
                         } else {
                             btn.setGraphic(Tools.getIcon("book_scenes"));
                             btn.setOnAction((ActionEvent event) -> {
-                                //TODO lanzar la vista de ver las escenas del libro
-                                //CharView.setChars(getTableView().getItems().get(getIndex()).getScenes());
-                                //App.loadScene(...)
+                                BookDAO b = new BookDAO(getTableView().getItems().get(getIndex()).getId());
+                                BookItemsController.setCurrent_book(b);
+                                App.loadScene(new Stage(), "book_items", " Imagination Writer - " + getTableView().getItems().get(getIndex()).getTitle(), true, false);
                             });
                             btn.setStyle("-fx-background-color: lightblue");
                             setGraphic(btn);
@@ -219,19 +192,15 @@ public class BooksController {
         };
         //Ponemos icono al título de la tabla
         tc_book_scenes.setGraphic(Tools.getIcon("book_scenes"));
-        tc_book_chars.setGraphic(Tools.getIcon("book_chars"));
         //Ponemos los botones en las celdas
-        tc_book_chars.setCellFactory(btn_chars);
         tc_book_scenes.setCellFactory(btn_scenes);
         //Añadimos las columnas a la tabla de libros
-        table_books.getColumns().add(tc_book_chars);
         table_books.getColumns().add(tc_book_scenes);
         //Para que se quede ajustado al tamaño de la tabla
         tc_book_title.prefWidthProperty().bind(table_books.widthProperty().divide(1.70));
-        tc_book_scenes.prefWidthProperty().bind(table_books.widthProperty().divide(5));
-        tc_book_chars.prefWidthProperty().bind(table_books.widthProperty().divide(5));
+        tc_book_scenes.prefWidthProperty().bind(table_books.widthProperty().divide(2));
         tc_book_scenes.setResizable(false);
-        tc_book_chars.setResizable(false);
+        tc_book_title.setResizable(false);
     }
 
     private void configureTableColumns() {
@@ -242,9 +211,10 @@ public class BooksController {
 
     /**
      * Calling this, we set the Author to the view
+     *
      * @param author new Author
      */
-    public static void setAuthor(AuthorDAO author){
+    public static void setAuthor(AuthorDAO author) {
         actual_author = author;
     }
 }

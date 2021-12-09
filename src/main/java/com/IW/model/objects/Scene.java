@@ -35,6 +35,7 @@ public class Scene implements Serializable, IScene {
     }
 
     public Scene() {
+        this.id = -1;
     }
 
     @Override

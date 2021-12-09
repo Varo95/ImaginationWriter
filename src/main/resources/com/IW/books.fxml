@@ -49,11 +49,6 @@
                               <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                           <children>
-                              <TableView fx:id="table_books" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
-                                  <columns>
-                                      <TableColumn fx:id="tc_book_title" prefWidth="75.0" resizable="false" style="-fx-alignment: CENTER;" text="Libro" />
-                                  </columns>
-                              </TableView>
                               <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                                   <columnConstraints>
                                       <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="33.333333333333336" />
@@ -72,6 +67,11 @@
                                       <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                                   </GridPane.margin>
                               </GridPane>
+                              <TableView fx:id="table_books" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                  <columns>
+                                      <TableColumn fx:id="tc_book_title" prefWidth="75.0" resizable="false" style="-fx-alignment: CENTER;" text="Libro" />
+                                  </columns>
+                              </TableView>
                           </children>
                       </GridPane>
                       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1">
@@ -100,14 +100,6 @@
                                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                           </columnResizePolicy>
                                       </TableView>
-                                      <TableView fx:id="table_all_authors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
-                                          <columns>
-                                              <TableColumn fx:id="tc_all_authors_name" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Todos los Autores" />
-                                          </columns>
-                                          <columnResizePolicy>
-                                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                          </columnResizePolicy>
-                                      </TableView>
                                       <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.vgrow="ALWAYS">
                                           <columnConstraints>
                                               <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" percentWidth="100.0" />
@@ -121,6 +113,14 @@
                                               <Button fx:id="btn_add_author" mnemonicParsing="false" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                                           </children>
                                       </GridPane>
+                                      <TableView fx:id="table_all_authors" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+                                          <columns>
+                                              <TableColumn fx:id="tc_all_authors_name" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Todos los Autores" />
+                                          </columns>
+                                          <columnResizePolicy>
+                                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                          </columnResizePolicy>
+                                      </TableView>
                                   </children>
                               </GridPane>
                           </children>

@@ -1,6 +1,6 @@
 package com.IW.model.dao;
 
-import com.IW.interfaces.IBeans;
+import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.SQL.IBookDAO;
 import com.IW.model.objects.Book;
 import com.IW.utils.PersistenceUnit;
@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -32,7 +33,7 @@ public class BookDAO extends Book implements IBookDAO {
                 this.setCreator(b.getCreator());
             }
         } catch (NoResultException e) {
-            logger.error("Autor con id: " + id + "\nNo encontrado en la base de datos");
+            logger.error("Libro con id: " + id + "\nNo encontrado en la base de datos");
         }
         PersistenceUnit.closeEM();
     }
@@ -65,12 +66,22 @@ public class BookDAO extends Book implements IBookDAO {
     }
 
     @Override
-    public void addAuthor(IBeans.IAuthor author) {
-
+    public void addAuthor(IAuthor author) {
+        EntityManager em = PersistenceUnit.createEM();
+        em.getTransaction().begin();
+        if(this.getEditors()==null)
+            this.editors = new ArrayList<>();
+        this.getEditors().add(author);
+        em.getTransaction().commit();
+        PersistenceUnit.closeEM();
     }
 
     @Override
-    public void deleteAuthor(IBeans.IAuthor author) {
-
+    public void deleteAuthor(IAuthor author) {
+        EntityManager em = PersistenceUnit.createEM();
+        em.getTransaction().begin();
+        this.getEditors().remove(author);
+        em.getTransaction().commit();
+        PersistenceUnit.closeEM();
     }
 }
