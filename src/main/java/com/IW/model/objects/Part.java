@@ -1,15 +1,14 @@
 package com.IW.model.objects;
 
+import com.IW.interfaces.IBeans.IBook;
+import com.IW.interfaces.IBeans.IChapter;
+import com.IW.interfaces.IBeans.IPart;
+
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.IW.interfaces.IBeans.IBook;
-import com.IW.interfaces.IBeans.IPart;
-import com.IW.interfaces.IBeans.IChapter;
-
-import javax.persistence.*;
 
 @Entity
 public class Part implements Serializable, IPart {
@@ -89,8 +88,8 @@ public class Part implements Serializable, IPart {
     }
 
     @Override
-    public String toCombobox(){
-        return "Parte: "+this.nPart + "."+this.id;
+    public String toCombobox() {
+        return "Parte: " + this.nPart + "." + this.id;
     }
 
     @Override

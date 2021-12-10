@@ -47,6 +47,7 @@ public class Tools {
     private static boolean Validate_img_URL(String url) {
         return Pattern.compile(URL_IMG_EXPRESSION).matcher(url).matches();
     }
+
     private static boolean Validate_Double_Value(String value) {
         return Pattern.compile(DOUBLE_EXPRESSION_TF).matcher(value).matches();
     }
@@ -160,6 +161,7 @@ public class Tools {
 
     /**
      * This method is used to get Text from a txt file
+     *
      * @return String with the whole text from the file, null if error happens
      */
     public static String readTextFromTXTFile() {
@@ -189,7 +191,7 @@ public class Tools {
             } finally {
                 try {
                     br.close();
-                }catch (IOException e){
+                } catch (IOException e) {
                     logger.error("Error al intentar cerrar el recurso de BufferedReader");
                 }
                 try {

@@ -1,7 +1,7 @@
 package com.IW.model.objects;
 
-import com.IW.interfaces.IBeans.IPart;
 import com.IW.interfaces.IBeans.IChapter;
+import com.IW.interfaces.IBeans.IPart;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -102,8 +102,8 @@ public class Chapter implements Serializable, IChapter {
     }
 
     @Override
-    public String toCombobox(){
-        return "Capítulo: "+this.nPage + "."+this.id;
+    public String toCombobox() {
+        return "Capítulo: " + this.nPage + "." + this.id;
     }
 
     @Override

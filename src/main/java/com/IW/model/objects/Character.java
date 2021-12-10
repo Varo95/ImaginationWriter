@@ -1,7 +1,9 @@
 package com.IW.model.objects;
 
+import com.IW.interfaces.IBeans.IBook;
 import com.IW.interfaces.IBeans.ICharacter;
-import com.IW.interfaces.IBeans.IBook;;import javax.persistence.*;
+
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 

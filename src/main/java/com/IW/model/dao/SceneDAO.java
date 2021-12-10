@@ -1,7 +1,6 @@
 package com.IW.model.dao;
 
 import com.IW.interfaces.SQL.ISceneDAO;
-import com.IW.model.objects.Character;
 import com.IW.model.objects.Scene;
 import com.IW.utils.PersistenceUnit;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ public class SceneDAO extends Scene implements ISceneDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(SceneDAO.class);
 
-    public SceneDAO(long id){
+    public SceneDAO(long id) {
         Scene s = null;
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
@@ -33,7 +32,7 @@ public class SceneDAO extends Scene implements ISceneDAO {
         PersistenceUnit.closeEM();
     }
 
-    public SceneDAO(){
+    public SceneDAO() {
         super();
     }
 

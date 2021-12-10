@@ -2,7 +2,6 @@ package com.IW.model.dao;
 
 import com.IW.interfaces.SQL.IChapterDAO;
 import com.IW.model.objects.Chapter;
-import com.IW.model.objects.Part;
 import com.IW.utils.PersistenceUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +14,7 @@ public class ChapterDAO extends Chapter implements IChapterDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(ChapterDAO.class);
 
-    public ChapterDAO(long id){
+    public ChapterDAO(long id) {
         Chapter c = null;
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
@@ -35,7 +34,7 @@ public class ChapterDAO extends Chapter implements IChapterDAO {
         PersistenceUnit.closeEM();
     }
 
-    public ChapterDAO(){
+    public ChapterDAO() {
         super();
     }
 

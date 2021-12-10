@@ -36,8 +36,8 @@
         <menus>
           <Menu mnemonicParsing="false" text="Archivo">
             <items>
-                  <MenuItem fx:id="download" mnemonicParsing="false" text="Descargar de la nube" />
-              <MenuItem fx:id="close" mnemonicParsing="false" text="Cerrar" />
+                  <MenuItem fx:id="mi_download" mnemonicParsing="false" text="Descargar de la nube" />
+              <MenuItem fx:id="mi_close" mnemonicParsing="false" text="Cerrar" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Ayuda">

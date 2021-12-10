@@ -1,7 +1,6 @@
 package com.IW.model.dao;
 
 import com.IW.interfaces.SQL.IPartDAO;
-import com.IW.model.objects.Author;
 import com.IW.model.objects.Part;
 import com.IW.utils.PersistenceUnit;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ public class PartDAO extends Part implements IPartDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(PartDAO.class);
 
-    public PartDAO(long id){
+    public PartDAO(long id) {
         Part p = null;
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
@@ -33,7 +32,7 @@ public class PartDAO extends Part implements IPartDAO {
         PersistenceUnit.closeEM();
     }
 
-    public PartDAO(){
+    public PartDAO() {
         super();
     }
 

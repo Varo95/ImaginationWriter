@@ -28,7 +28,7 @@ public class Author implements Serializable, IAuthor {
     protected String password;
     @Column(name = "photo")
     protected String photo;
-    @OneToMany(mappedBy = "creator", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     protected List<Book> books;
 
     public Author(long id, String name, String password, String photo) {

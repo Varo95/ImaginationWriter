@@ -6,7 +6,10 @@ import com.IW.utils.Dialog;
 import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
@@ -21,9 +24,9 @@ public class LoginController {
     @FXML
     private PasswordField tf_passwd;
     @FXML
-    private MenuItem download;
+    private MenuItem mi_download;
     @FXML
-    private MenuItem close;
+    private MenuItem mi_close;
     @FXML
     private Button btn_register;
     @FXML
@@ -42,16 +45,30 @@ public class LoginController {
         btn_login.setOnAction(event -> onClickLogin());
         btn_register.setOnAction(event -> onClickRegister());
         mi_about.setOnAction(event -> App.loadScene(new Stage(), "about", "Sobre Imagination Writer", true, false));
-        download.setOnAction(event -> {
-            /*if(PersistenceUnit.getType().equals("H2")){
-                PersistenceUnit.setType("MariaDB");
-                PersistenceUnit.changeConnection();
-            }else{
-                PersistenceUnit.setType("H2");
-                PersistenceUnit.changeConnection();
-            }*/
+        mi_download.setOnAction(event -> {
+            try {
+                btn_register.setDisable(true);
+                btn_login.setDisable(true);
+                tf_name.setDisable(true);
+                tf_passwd.setDisable(true);
+                mi_close.setDisable(true);
+                PersistenceUnit.copyMariaDBToH2();
+                Dialog.showInformation("¡Éxito!", "Se cargó la base de datos desde la nube", "Pudimos hacer una copia en local.");
+                btn_register.setDisable(false);
+                btn_login.setDisable(false);
+                tf_name.setDisable(false);
+                tf_passwd.setDisable(false);
+                mi_close.setDisable(false);
+            } catch (IllegalStateException e) {
+                Dialog.showError("Error en la conexión", "Compruebe la conexión a internet", e.getMessage());
+                btn_register.setDisable(false);
+                btn_login.setDisable(false);
+                tf_name.setDisable(false);
+                tf_passwd.setDisable(false);
+                mi_close.setDisable(false);
+            }
         });
-        close.setOnAction(event -> App.closeScene((Stage) btn_register.getScene().getWindow()));
+        mi_close.setOnAction(event -> App.closeScene((Stage) btn_register.getScene().getWindow()));
     }
 
     /**
@@ -74,15 +91,15 @@ public class LoginController {
         }
     }
 
-    private void menuItemsSetIcons(){
-        close.setGraphic(Tools.getIcon("close"));
-        download.setGraphic(Tools.getIcon("download"));
+    private void menuItemsSetIcons() {
+        mi_close.setGraphic(Tools.getIcon("close"));
+        mi_download.setGraphic(Tools.getIcon("download"));
         mi_about.setGraphic(Tools.getIcon("info"));
     }
 
-    private void onClickRegister(){
+    private void onClickRegister() {
         AuthorDAO a = new AuthorDAO();
         ProfileController.setActual_author(a);
-        App.loadScene(new Stage(),"profile", " Imagination Writer - Registro", false, false);
+        App.loadScene(new Stage(), "profile", " Imagination Writer - Registro", false, false);
     }
 }

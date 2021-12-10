@@ -1,7 +1,6 @@
 package com.IW.model.dao;
 
 import com.IW.interfaces.SQL.ICharacterDAO;
-import com.IW.model.objects.Author;
 import com.IW.model.objects.Character;
 import com.IW.utils.PersistenceUnit;
 import org.slf4j.Logger;
@@ -15,7 +14,7 @@ public class CharacterDAO extends Character implements ICharacterDAO {
 
     private static final Logger logger = LoggerFactory.getLogger(CharacterDAO.class);
 
-    public CharacterDAO(long id){
+    public CharacterDAO(long id) {
         Character c = null;
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
@@ -33,9 +32,10 @@ public class CharacterDAO extends Character implements ICharacterDAO {
         PersistenceUnit.closeEM();
     }
 
-    public CharacterDAO(){
+    public CharacterDAO() {
         super();
     }
+
     @Override
     public void persist() {
         EntityManager em = PersistenceUnit.createEM();

@@ -103,8 +103,8 @@ public class BookItemsController {
         });
         btn_add_scene.setOnAction(event -> {
             SceneDAO s = new SceneDAO();
-            s.setTitle(Dialog.showDialogString("T�lo de la nueva escena", "T�lo escena", "Introduce el titulo de la nueva escena"));
-            s.setDescription(Dialog.showDialogString("Descripci󮠤e la nueva escena", "Descripci󮠥scena", "Introduce descripci󮠤e la escena"));
+            s.setTitle(Dialog.showDialogString("Título de la nueva escena", "Título escena", "Introduce el titulo de la nueva escena"));
+            s.setDescription(Dialog.showDialogString("Descripción la nueva escena", "Descripción escena", "Introduce descripci󮠤e la escena"));
             String cover = Dialog.showDialogExamine("Foto escena", "Selecciona escena", "Introduce la URL de la foto de la escena");
             if (s.getTitle() != null) {
                 if (!cover.equals("")) {
@@ -122,8 +122,8 @@ public class BookItemsController {
         btn_edit_scene.setOnAction(event -> {
             if (table_items_scenes.getSelectionModel().getSelectedItem() != null) {
                 SceneDAO s = new SceneDAO(table_items_scenes.getSelectionModel().getSelectedItem().getId());
-                s.setTitle(Dialog.showDialogString("T�lo de la nueva escena", "T�lo escena", s.getTitle()));
-                s.setDescription(Dialog.showDialogString("Descripci󮠤e la escena", "Descripci󮠤e la escena", s.getDescription()));
+                s.setTitle(Dialog.showDialogString("Título de la nueva escena", "Título escena", s.getTitle()));
+                s.setDescription(Dialog.showDialogString("Descripción la escena", "Descripción la escena", s.getDescription()));
                 String cover = Dialog.showDialogExamine("Foto escena", "Selecciona la foto de la escena", s.getPhoto());
                 if (s.getTitle() != null) {
                     if (!cover.equals("")) {

@@ -38,7 +38,7 @@ public class BookPartsController {
     private Button btn_remove_chapter;
     private static BookDAO current_book;
     private static PartDAO current_part;
-
+    //TODO todavía por terminar
     @FXML
     protected void initialize() {
         configureTables();

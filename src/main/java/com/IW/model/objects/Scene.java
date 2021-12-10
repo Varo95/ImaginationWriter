@@ -1,7 +1,7 @@
 package com.IW.model.objects;
 
-import com.IW.interfaces.IBeans.IScene;
 import com.IW.interfaces.IBeans.IBook;
+import com.IW.interfaces.IBeans.IScene;
 
 import javax.persistence.*;
 import java.io.Serial;

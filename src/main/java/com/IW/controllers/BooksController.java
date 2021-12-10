@@ -5,7 +5,6 @@ import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.IBeans.IBook;
 import com.IW.model.dao.AuthorDAO;
 import com.IW.model.dao.BookDAO;
-import com.IW.model.objects.Book;
 import com.IW.utils.Dialog;
 import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
@@ -52,6 +51,8 @@ public class BooksController {
     private TableView<IAuthor> table_all_authors;
     @FXML
     private TableColumn<IAuthor, String> tc_all_authors_name;
+    @FXML
+    private Label lb_book_creator;
 
     private static AuthorDAO actual_author;
 
@@ -71,28 +72,13 @@ public class BooksController {
                 iview_book_cover.setImage(Objects.requireNonNullElse(Tools.getImage(newValue.getCover(), false), Tools.default_photo_cover));
                 if (newValue.getEditors() != null) {
                     table_authors.setItems(FXCollections.observableList(newValue.getEditors()));
+                    table_all_authors.setItems(FXCollections.observableList(AuthorDAO.listAll()));
                     table_all_authors.getItems().removeAll(newValue.getEditors());
                     table_all_authors.getItems().remove(newValue.getCreator());
                 }
-                btn_delete_author.setDisable(newValue.getCreator().equals(actual_author));
-                table_authors.getItems().add(newValue.getCreator());
-                btn_add_author.setDisable(table_all_authors.getItems().size() == 0);
-            }
-        });
-        table_authors.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                if (btn_delete_author.isDisabled()) {
-                    btn_delete_author.setDisable(false);
-                }
-                if (table_books.getSelectionModel().getSelectedItem() != null) {
-                    //desactiva el boton de eliminar autor si el autor seleccionado coincide con el autor actual
-                    if(newValue.equals(actual_author)){
-                        btn_delete_author.setDisable(true);
-                    }else{
-                        //si no, lo desactiva si el nuevo autor seleccionado es el creador del libro
-                        btn_delete_author.setDisable(newValue.equals(table_books.getSelectionModel().getSelectedItem().getCreator()));
-                    }
-                }
+                lb_book_creator.setText(newValue.getCreator().getName());
+                btn_delete_author.setDisable(!newValue.getCreator().equals(actual_author));
+                btn_add_author.setDisable(!newValue.getCreator().equals(actual_author));
             }
         });
         btn_add_book.setOnAction(event -> {
@@ -113,6 +99,7 @@ public class BooksController {
         });
         btn_edit_book.setOnAction(event -> {
             if (table_books.getSelectionModel().getSelectedItem() != null) {
+                System.out.println("Este es el libro "+table_books.getSelectionModel().getSelectedItem().toString());
                 EditorController.setBook((BookDAO) table_books.getSelectionModel().getSelectedItem());
                 App.loadScene(new Stage(), "editor", " Imagination Writer - " + table_books.getSelectionModel().getSelectedItem().getTitle(), false, true);
             }
@@ -142,7 +129,7 @@ public class BooksController {
             }
         });
         btn_delete_author.setOnAction(event -> {
-            if (table_authors.getSelectionModel().getSelectedItem() != null && table_books.getSelectionModel().getSelectedItem() != null) {
+            if (table_books.getSelectionModel().getSelectedItem() != null) {
                 BookDAO b = (BookDAO) table_books.getSelectionModel().getSelectedItem();
                 if (table_authors.getSelectionModel().getSelectedItem() != null) {
                     AuthorDAO a = (AuthorDAO) table_authors.getSelectionModel().getSelectedItem();
@@ -164,7 +151,13 @@ public class BooksController {
             App.loadScene(new Stage(), "profile", "Perfil", true, false);
         });
         mi_upload.setOnAction(event -> {
-            PersistenceUnit.copyH2toMariaDB();
+            try {
+                Dialog.showWarning("¡Cuidado!", "No pulse ningún botón", "Acepte este diálogo y espere a que salga el siguiente para continuar, de lo contrario no le aseguramos la integridad de la aplicación");
+                PersistenceUnit.copyH2toMariaDB();
+                Dialog.showInformation("¡Éxito!", "Se cargó la base de datos a la nube", "Pudimos hacer una copia en la nube.");
+            } catch (IllegalStateException e) {
+                Dialog.showError("Error en la conexión", "Compruebe la conexión a internet", e.getMessage());
+            }
         });
         configureTableColumns();
         addTableBookButtons();

@@ -1,17 +1,12 @@
 package com.IW.model.objects;
 
+import com.IW.interfaces.IBeans.*;
+
+import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.IW.interfaces.IBeans.IBook;
-import com.IW.interfaces.IBeans.IAuthor;
-import com.IW.interfaces.IBeans.ICharacter;
-import com.IW.interfaces.IBeans.IPart;
-import com.IW.interfaces.IBeans.IScene;
-
-import javax.persistence.*;
 
 @Entity
 @Table(name = "Book")
@@ -25,21 +20,21 @@ public class Book implements Serializable, IBook {
     protected long id;
     @Column(name = "title")
     protected String title;
-    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Part.class)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Part.class)
     protected List<Part> parts;
-    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Character.class)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Character.class)
     protected List<Character> characters;
-    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Scene.class)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Scene.class)
     protected List<Scene> scenes;
     @JoinTable(name = "author_book",
             joinColumns = @JoinColumn(name = "id_book", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "id_author", nullable = false), uniqueConstraints = {@UniqueConstraint(columnNames = { "id_book", "id_author" }) }
+            inverseJoinColumns = @JoinColumn(name = "id_author", nullable = false), uniqueConstraints = {@UniqueConstraint(columnNames = {"id_book", "id_author"})}
     )
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     protected List<Author> editors;
     @Column(name = "cover")
     protected String cover;
-    @ManyToOne(targetEntity = Author.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Author.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Author creator;
     @Transient
     protected int nPages;
@@ -55,11 +50,14 @@ public class Book implements Serializable, IBook {
         this.editors = editors;
         this.cover = cover;
         this.creator = creator;
+        System.out.println(this.toString()
+        );
     }
 
     public Book() {
         this.id = -1;
         this.parts = new ArrayList<>();
+        System.out.println(this.toString());
     }
 
     @Override
