@@ -26,24 +26,6 @@ public class Dialog {
         return showDialogBoolean(title, header, description);
     }
 
-    /**
-     * This dialog shows a textfield and return the text that user puts in
-     *
-     * @param title       title of the dialog
-     * @param header      the content of the dialog
-     * @param description the description of the dialog
-     * @return null if closed or press Cancel, otherwhise the string that user input
-     */
-    public static String showDialogString(String title, String header, String description) {
-        TextInputDialog dialog = new TextInputDialog("");
-        Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-        dialog.setContentText(description);
-        Optional<String> result = dialog.showAndWait();
-        return result.orElse(null);
-    }
-
     private static void showDialog(Alert.AlertType type, String title, String header, String description) {
         Alert alert = new Alert(type);
         Tools.addCssAndIcon((Stage) alert.getDialogPane().getScene().getWindow());
@@ -62,6 +44,44 @@ public class Dialog {
         alert.showAndWait();
         return alert.getResult().getButtonData().isDefaultButton();
     }
+
+    /**
+     * This dialog shows a textfield and return the text that user puts in
+     *
+     * @param title       title of the dialog
+     * @param header      the content of the dialog
+     * @param description the description of the dialog
+     * @return null if closed or press Cancel, otherwhise the string that user input
+     */
+    public static String showDialogString(String title, String header, String description) {
+        TextInputDialog dialog = new TextInputDialog("");
+        Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(description);
+        Optional<String> result = dialog.showAndWait();
+        return result.orElse(null);
+    }
+
+    /**
+     * This dialog shows a textfield with only double values
+     *
+     * @param title       title of the dialog
+     * @param header      the content of the dialog
+     * @param description the description of the dialog
+     * @return if null, returns -1, else the user input value of the textfield
+     */
+    public static int showDialogPart_Chapter(String title, String header, String description) {
+        TextInputDialog dialog = new TextInputDialog();
+        Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        Tools.onlyDoubleValue(dialog.getEditor());
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(description);
+        Optional<String> result = dialog.showAndWait();
+        return Integer.parseInt(result.orElse("-1"));
+    }
+
     /**
      * This dialog shows a textfield with a button to examine and return the text that are in textfield
      *
@@ -70,7 +90,7 @@ public class Dialog {
      * @param description the description of the dialog
      * @return null if closed or press Cancel, otherwhise the string the text on textfield
      */
-    public static String showDialogExamine(String title, String header, String description){
+    public static String showDialogExamine(String title, String header, String description) {
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
         dialog.setTitle(title);
@@ -83,8 +103,8 @@ public class Dialog {
             tf_url.setText(Tools.selectImageFile());
         });
         GridPane p = new GridPane();
-        p.addColumn(0,examine);
-        p.addColumn(1,tf_url);
+        p.addColumn(0, examine);
+        p.addColumn(1, tf_url);
         p.hgapProperty().setValue(5);
         dialog.getDialogPane().setContent(p);
         dialog.showAndWait();

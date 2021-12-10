@@ -21,6 +21,8 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        PersistenceUnit.setType("H2");
+        PersistenceUnit.changeConnection();
         loadScene(primaryStage, "login", " Imagination Writer - Login", false, false);
     }
 

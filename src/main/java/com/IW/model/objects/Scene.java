@@ -23,7 +23,7 @@ public class Scene implements Serializable, IScene {
     protected String description;
     @Column(name = "photo")
     protected String photo;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Book.class)
     protected Book book;
 
     public Scene(long id, String title, String description, String photo, Book book) {

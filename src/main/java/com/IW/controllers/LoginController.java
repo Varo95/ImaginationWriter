@@ -21,7 +21,7 @@ public class LoginController {
     @FXML
     private PasswordField tf_passwd;
     @FXML
-    private CheckMenuItem connect;
+    private MenuItem download;
     @FXML
     private MenuItem close;
     @FXML
@@ -31,8 +31,6 @@ public class LoginController {
 
     @FXML
     protected void initialize() {
-        PersistenceUnit.setType("H2");
-        PersistenceUnit.changeConnection();
         menuItemsSetIcons();
         imageview.setImage(Tools.getImage("assets/user_default.png", true));
         tf_name.setOnKeyPressed(event -> {
@@ -44,14 +42,14 @@ public class LoginController {
         btn_login.setOnAction(event -> onClickLogin());
         btn_register.setOnAction(event -> onClickRegister());
         mi_about.setOnAction(event -> App.loadScene(new Stage(), "about", "Sobre Imagination Writer", true, false));
-        connect.setOnAction(event -> {
-            if(PersistenceUnit.getType().equals("H2")){
+        download.setOnAction(event -> {
+            /*if(PersistenceUnit.getType().equals("H2")){
                 PersistenceUnit.setType("MariaDB");
                 PersistenceUnit.changeConnection();
             }else{
                 PersistenceUnit.setType("H2");
                 PersistenceUnit.changeConnection();
-            }
+            }*/
         });
         close.setOnAction(event -> App.closeScene((Stage) btn_register.getScene().getWindow()));
     }
@@ -78,7 +76,7 @@ public class LoginController {
 
     private void menuItemsSetIcons(){
         close.setGraphic(Tools.getIcon("close"));
-        connect.setGraphic(Tools.getIcon("cloud"));
+        download.setGraphic(Tools.getIcon("download"));
         mi_about.setGraphic(Tools.getIcon("info"));
     }
 

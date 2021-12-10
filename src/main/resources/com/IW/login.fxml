@@ -36,7 +36,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="Archivo">
             <items>
-                  <CheckMenuItem fx:id="connect" mnemonicParsing="false" text="Conectado con la nube" />
+                  <MenuItem fx:id="download" mnemonicParsing="false" text="Descargar de la nube" />
               <MenuItem fx:id="close" mnemonicParsing="false" text="Cerrar" />
             </items>
           </Menu>

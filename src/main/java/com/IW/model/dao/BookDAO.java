@@ -1,14 +1,19 @@
 package com.IW.model.dao;
 
 import com.IW.interfaces.IBeans.IAuthor;
+import com.IW.interfaces.IBeans.IBook;
 import com.IW.interfaces.SQL.IBookDAO;
+import com.IW.model.objects.Author;
 import com.IW.model.objects.Book;
 import com.IW.utils.PersistenceUnit;
+import org.hibernate.query.NativeQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -46,6 +51,7 @@ public class BookDAO extends Book implements IBookDAO {
     public void persist() {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
+        System.out.println("Estoy persistiendo puto");
         Book b = em.merge(this);
         em.persist(b);
         if (getId() == -1) {
@@ -84,5 +90,21 @@ public class BookDAO extends Book implements IBookDAO {
         this.getEditors().remove(author);
         em.getTransaction().commit();
         PersistenceUnit.closeEM();
+    }
+
+
+    public static List<IBook> getBooksAsEditor(IAuthor editor){
+        EntityManager em = PersistenceUnit.createEM();
+        em.getTransaction().begin();
+        String query = "SELECT author_book.id_book FROM author_book WHERE author_book.id_author=:editor";
+        Query q = em.createNativeQuery(query);
+        q.setParameter("editor",editor.getId());
+        List<IBook> result = new ArrayList<>();
+        em.getTransaction().commit();
+        for(Object o: q.getResultList()){
+            result.add(new BookDAO(((BigInteger) o).longValue()));
+        }
+        PersistenceUnit.closeEM();
+        return result;
     }
 }

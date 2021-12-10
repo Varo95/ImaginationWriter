@@ -1,5 +1,12 @@
 package com.IW.controllers;
 
+import com.IW.interfaces.IBeans.ICharacter;
+import com.IW.interfaces.IBeans.IScene;
+import com.IW.model.dao.BookDAO;
+import com.IW.model.dao.CharacterDAO;
+import com.IW.model.dao.SceneDAO;
+import com.IW.utils.Dialog;
+import com.IW.utils.Tools;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -7,15 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.ImageView;
-import com.IW.interfaces.IBeans.ICharacter;
-import com.IW.interfaces.IBeans.IScene;
-import com.IW.interfaces.IBeans.IBook;
-import com.IW.model.dao.BookDAO;
-import com.IW.model.dao.CharacterDAO;
-import com.IW.utils.Dialog;
-import com.IW.utils.Tools;
 
 import java.util.Objects;
 
@@ -23,30 +22,28 @@ public class BookItemsController {
 
     @FXML
     private TableView<ICharacter> table_items_characters;
-
     @FXML
     private TableColumn<ICharacter, String> tc_items_characters;
-
     @FXML
     private ImageView iview_photo;
-
     @FXML
     private Label lb_description;
-
     @FXML
     private TableView<IScene> table_items_scenes;
-
     @FXML
     private TableColumn<IScene, String> tc_items_scenes;
-
     @FXML
     private Button btn_add_character;
-
     @FXML
     private Button btn_edit_character;
-
     @FXML
     private Button btn_delete_character;
+    @FXML
+    private Button btn_add_scene;
+    @FXML
+    private Button btn_edit_scene;
+    @FXML
+    private Button btn_delete_scene;
 
     private static BookDAO current_book;
 
@@ -104,6 +101,51 @@ public class BookItemsController {
                 table_items_characters.getItems().remove(c);
             }
         });
+        btn_add_scene.setOnAction(event -> {
+            SceneDAO s = new SceneDAO();
+            s.setTitle(Dialog.showDialogString("T�lo de la nueva escena", "T�lo escena", "Introduce el titulo de la nueva escena"));
+            s.setDescription(Dialog.showDialogString("Descripci󮠤e la nueva escena", "Descripci󮠥scena", "Introduce descripci󮠤e la escena"));
+            String cover = Dialog.showDialogExamine("Foto escena", "Selecciona escena", "Introduce la URL de la foto de la escena");
+            if (s.getTitle() != null) {
+                if (!cover.equals("")) {
+                    if (Tools.FileCopy(cover, "assets/books_scenes/" + s.getTitle() + cover.substring(cover.lastIndexOf(".")))) {
+                        Dialog.showInformation("", "Exito al copiar la foto", "Hemos guardado una copia de tu foto en otra carpeta!");
+                        s.setPhoto("assets/books_scenes/" + s.getTitle() + cover.substring(cover.lastIndexOf(".")));
+                    }
+                }
+                s.setBook(current_book);
+                s.persist();
+                table_items_scenes.getItems().add(s);
+
+            }
+        });
+        btn_edit_scene.setOnAction(event -> {
+            if (table_items_scenes.getSelectionModel().getSelectedItem() != null) {
+                SceneDAO s = new SceneDAO(table_items_scenes.getSelectionModel().getSelectedItem().getId());
+                s.setTitle(Dialog.showDialogString("T�lo de la nueva escena", "T�lo escena", s.getTitle()));
+                s.setDescription(Dialog.showDialogString("Descripci󮠤e la escena", "Descripci󮠤e la escena", s.getDescription()));
+                String cover = Dialog.showDialogExamine("Foto escena", "Selecciona la foto de la escena", s.getPhoto());
+                if (s.getTitle() != null) {
+                    if (!cover.equals("")) {
+                        if (Tools.FileCopy(cover, "assets/books_scenes/" + s.getTitle() + cover.substring(cover.lastIndexOf(".")))) {
+                            Dialog.showInformation("", "Exito al copiar la foto", "Hemos guardado una copia de tu foto en otra carpeta!");
+                            s.setPhoto("assets/books_scenes/" + s.getTitle() + cover.substring(cover.lastIndexOf(".")));
+                        }
+                    }
+                    s.setBook(current_book);
+                    s.persist();
+                    table_items_scenes.getItems().remove(s);
+                    table_items_scenes.getItems().add(s);
+                }
+            }
+        });
+        btn_delete_scene.setOnAction(event -> {
+            if (table_items_scenes.getSelectionModel().getSelectedItem() != null) {
+                SceneDAO s = new SceneDAO(table_items_scenes.getSelectionModel().getSelectedItem().getId());
+                s.remove();
+                table_items_scenes.getItems().remove(s);
+            }
+        });
         setIcons();
     }
 
@@ -112,6 +154,10 @@ public class BookItemsController {
         tc_items_characters.setCellValueFactory(eachCharacter -> new SimpleStringProperty(eachCharacter.getValue().getName()));
         table_items_scenes.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
+                if (btn_edit_scene.isDisabled() && btn_delete_scene.isDisabled()) {
+                    btn_edit_scene.setDisable(false);
+                    btn_delete_scene.setDisable(false);
+                }
                 lb_description.setText(newValue.getDescription());
                 iview_photo.setImage(Objects.requireNonNullElseGet(Tools.getImage(newValue.getPhoto(), false), () -> Tools.getImage(default_photo_scene, true)));
             }
@@ -136,6 +182,8 @@ public class BookItemsController {
         btn_add_character.setGraphic(Tools.getIcon("add"));
         btn_edit_character.setGraphic(Tools.getIcon("edit"));
         btn_delete_character.setGraphic(Tools.getIcon("remove"));
-
+        btn_add_scene.setGraphic(Tools.getIcon("add"));
+        btn_edit_scene.setGraphic(Tools.getIcon("edit"));
+        btn_delete_scene.setGraphic(Tools.getIcon("remove"));
     }
 }

@@ -19,11 +19,11 @@ public class Chapter implements Serializable, IChapter {
     protected long id;
     @Column(name = "nPage")
     protected int nPage;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Part.class)
     protected Part part;
-    @Column(name = "resume")
+    @Column(name = "resume", columnDefinition = "LONGTEXT")
     protected String resume;
-    @Column(name = "note")
+    @Column(name = "note", columnDefinition = "LONGTEXT")
     protected String note;
     @Column(name = "text", columnDefinition = "LONGTEXT")
     protected String text;

@@ -25,21 +25,21 @@ public class Book implements Serializable, IBook {
     protected long id;
     @Column(name = "title")
     protected String title;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Part.class)
     protected List<Part> parts;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Character.class)
     protected List<Character> characters;
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book", cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Scene.class)
     protected List<Scene> scenes;
     @JoinTable(name = "author_book",
             joinColumns = @JoinColumn(name = "id_book", nullable = false),
-            inverseJoinColumns = @JoinColumn(name = "id_author", nullable = false)
+            inverseJoinColumns = @JoinColumn(name = "id_author", nullable = false), uniqueConstraints = {@UniqueConstraint(columnNames = { "id_book", "id_author" }) }
     )
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.LAZY)
     protected List<Author> editors;
     @Column(name = "cover")
     protected String cover;
-    @ManyToOne
+    @ManyToOne(targetEntity = Author.class, cascade = {CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH, CascadeType.REMOVE}, fetch = FetchType.EAGER)
     protected Author creator;
     @Transient
     protected int nPages;

@@ -26,10 +26,10 @@ public class AuthorDAO extends Author implements IAuthorDAO {
             a = em.find(Author.class, id);
             if (a != null) {
                 this.setId(a.getId());
+                this.setPassword(a.getPassword());
                 this.setName(a.getName());
                 this.setPhoto(a.getPhoto());
-                if(a.getBooks()!=null)
-                    this.setBooks(a.getBooks());
+                this.setBooks(a.getBooks());
             }
         } catch (NoResultException e) {
             logger.error("Autor con id: " + id + "\nNo encontrado en la base de datos");

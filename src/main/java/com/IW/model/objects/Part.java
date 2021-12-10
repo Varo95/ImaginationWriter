@@ -22,9 +22,9 @@ public class Part implements Serializable, IPart {
     protected long id;
     @Column(name = "nPart")
     protected int nPart;
-    @OneToMany(mappedBy = "part", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Chapter.class)
     protected List<Chapter> chapters;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Book.class)
     protected Book book;
 
     public Part(long id, int nPart, List<Chapter> chapters, Book book) {

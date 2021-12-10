@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Character")
+@Table(name = "_Character")
 public class Character implements Serializable, ICharacter {
 
     @Serial
@@ -21,7 +21,7 @@ public class Character implements Serializable, ICharacter {
     protected String description;
     @Column(name = "photo")
     protected String photo;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Book.class)
     protected Book book;
 
     public Character(long id, String name, String description, String photo, Book book) {

@@ -1,27 +1,31 @@
 package com.IW.utils;
 
 import com.IW.App;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 import jfxtras.styles.jmetro.MDL2IconFont;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 import java.util.regex.Pattern;
 
 public class Tools {
 
     private static final Logger logger = LoggerFactory.getLogger(Tools.class);
     private static final String URL_IMG_EXPRESSION = "(http)?s?:?(\\/\\/[^\"']*\\.(?:bmp|gif|jpg|jpeg|png))";
+    private static final String DOUBLE_EXPRESSION_TF = "-?(([1-9][0-9]*)|0)?(\\.[0-9]*)?";
     public static final Image default_photo_cover = getImage("icon.png", true);
 
     /**
@@ -40,8 +44,11 @@ public class Tools {
      * @param url url to check
      * @return true if ends with jpg, gif, or png, otherwhise, false
      */
-    public static boolean Validate_img_URL(String url) {
+    private static boolean Validate_img_URL(String url) {
         return Pattern.compile(URL_IMG_EXPRESSION).matcher(url).matches();
+    }
+    private static boolean Validate_Double_Value(String value) {
+        return Pattern.compile(DOUBLE_EXPRESSION_TF).matcher(value).matches();
     }
 
     /**
@@ -50,7 +57,7 @@ public class Tools {
      * @param url url to check
      * @return true if ends with jpg, gif, or png, otherwhise, false
      */
-    public static boolean ValidateFile_img(String url) {
+    private static boolean ValidateFile_img(String url) {
         boolean result = switch (url.toLowerCase().substring(url.length() - 4, url.length())) {
             case ".bmp", ".gif", ".jpg", ".png" -> true;
             default -> false;
@@ -71,7 +78,7 @@ public class Tools {
      * @return the Image from the resources loaded
      */
     public static Image getImage(String resPath, boolean isResPath) {
-        if(resPath == null)
+        if (resPath == null)
             return null;
         if (isResPath)
             return new Image(Objects.requireNonNull(App.class.getResourceAsStream(resPath)));
@@ -152,6 +159,76 @@ public class Tools {
     }
 
     /**
+     * This method is used to get Text from a txt file
+     * @return String with the whole text from the file, null if error happens
+     */
+    public static String readTextFromTXTFile() {
+        String result = null;
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text files", "*.txt"));
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        File selectedFile = fc.showOpenDialog(null);
+        if (selectedFile != null) {
+            BufferedReader br = null;
+            FileReader fr = null;
+            try {
+                fr = new FileReader(selectedFile.getAbsolutePath());
+                br = new BufferedReader(fr);
+                StringBuilder sb = new StringBuilder();
+                String line = br.readLine();
+                while (line != null) {
+                    sb.append(line);
+                    sb.append(System.lineSeparator());
+                    line = br.readLine();
+                }
+                result = sb.toString();
+            } catch (FileNotFoundException e) {
+                logger.error("Error, fichero no encontrado");
+            } catch (IOException e) {
+                logger.error("");
+            } finally {
+                try {
+                    br.close();
+                }catch (IOException e){
+                    logger.error("Error al intentar cerrar el recurso de BufferedReader");
+                }
+                try {
+                    fr.close();
+                } catch (IOException e) {
+                    logger.error("Error al intentar cerrar el recurso de FileReader");
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * This method is used to only write double values on a TextField
+     *
+     * @param tf TextField to update
+     */
+    public static void onlyDoubleValue(TextField tf) {
+        UnaryOperator<TextFormatter.Change> filter = c -> Validate_Double_Value(c.getControlNewText()) ? c : null;
+        StringConverter<Double> converter = new StringConverter<>() {
+            @Override
+            public Double fromString(String s) {
+                if (s.isEmpty() || "-".equals(s) || ".".equals(s) || "-.".equals(s)) {
+                    return 0.0;
+                } else {
+                    return Double.valueOf(s);
+                }
+            }
+
+            @Override
+            public String toString(Double d) {
+                return d.toString();
+            }
+        };
+        TextFormatter<Double> textFormatter = new TextFormatter<>(converter, 0.0, filter);
+        tf.setTextFormatter(textFormatter);
+    }
+
+    /**
      * This method is used to get icons and put them into a window, making less code and more readable to coders
      * Codes are extracted from Microsoft official page -> https://docs.microsoft.com/en-us/windows/apps/design/style/segoe-ui-symbol-font
      */
@@ -195,7 +272,7 @@ public class Tools {
                 result.setStyle("-fx-text-fill: orange;");
                 yield result;
             }
-            case "close-session"-> {
+            case "close-session" -> {
                 result = new MDL2IconFont("\uF3B1");
                 yield result;
             }
@@ -229,6 +306,16 @@ public class Tools {
             }
             case "book_part" -> {
                 result = new MDL2IconFont("\uE74C");
+                yield result;
+            }
+            case "download" -> {
+                result = new MDL2IconFont("\uE896");
+                result.setStyle("-fx-text-fill: lightgreen;");
+                yield result;
+            }
+            case "upload" -> {
+                result = new MDL2IconFont("\uE898");
+                result.setStyle("-fx-text-fill: lightgreen;");
                 yield result;
             }
             default -> new MDL2IconFont("\uF16B");

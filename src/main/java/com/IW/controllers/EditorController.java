@@ -17,6 +17,9 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -50,6 +53,14 @@ public class EditorController {
     private Button btn_save_resume;
     @FXML
     private Button btn_save_note;
+    @FXML
+    private Label lb_auto_save;
+    @FXML
+    private Button btn_save_book;
+    @FXML
+    private Label lb_info_save;
+    @FXML
+    private Button btn_open_txt;
 
     private static BookDAO current_book;
     private static ChapterDAO current_chapter;
@@ -76,15 +87,31 @@ public class EditorController {
             App.loadScene(new Stage(), "book_items", " Imagination Writer - " + current_book.getTitle(), true, false);
         });
         btn_save_note.setOnAction(event -> {
-            if(current_chapter!=null){
+            if (current_chapter != null) {
                 current_chapter.setNote(ta_note_chapter.getText());
                 current_chapter.persist();
             }
         });
         btn_save_resume.setOnAction(event -> {
-            if(current_chapter!=null){
+            if (current_chapter != null) {
                 current_chapter.setResume(ta_resume_chapter.getText());
                 current_chapter.persist();
+            }
+        });
+        btn_save_book.setOnAction(event -> {
+            saveBook();
+            lb_info_save.setText("Guardaste correctamente el libro");
+            lb_auto_save.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss | dd/MM/yyyy")));
+        });
+        btn_open_txt.setOnAction(event -> {
+            if(current_chapter!=null){
+                ta_chapter.setText(Objects.requireNonNullElse(Tools.readTextFromTXTFile(), ""));
+            }
+        });
+        btn_controlPC.setOnAction(event -> {
+            if(current_book!=null){
+                BookPartsController.setCurrent_book(current_book);
+                App.loadScene(new Stage(), "book_parts","Gestor de capítulos-partes de "+current_book.getTitle(), false, false);
             }
         });
     }
@@ -111,7 +138,7 @@ public class EditorController {
         cb_chapters.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 current_chapter = new ChapterDAO(newValue.getId());
-                if(ta_chapter.isDisabled() && tab_chapter.isDisabled() && ta_resume_chapter.isDisabled()){
+                if (ta_chapter.isDisabled() && tab_chapter.isDisabled() && ta_resume_chapter.isDisabled()) {
                     ta_chapter.setDisable(false);
                     tab_chapter.setDisable(false);
                     ta_resume_chapter.setDisable(false);
@@ -163,24 +190,14 @@ public class EditorController {
         tt_autosave = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(() -> {
-                    if(current_chapter!=null) {
-                        current_chapter.setText(ta_chapter.getText());
-                        current_chapter.setResume(ta_resume_chapter.getText());
-                        current_chapter.setNote(ta_note_chapter.getText());
-                        current_chapter.setPart(current_part);
-                        current_chapter.persist();
-                    }
-                    if(current_part!=null) {
-                        current_part.setBook(current_book);
-                        current_part.persist();
-                    }
-                    if(current_book!=null)
-                        current_book.persist();
+                Platform.runLater(()->{
+                    saveBook();
+                    lb_info_save.setText("Último autoguardado");
+                    lb_auto_save.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss | dd/MM/yyyy")));
                 });
             }
         };
-        auto_save.schedule(tt_autosave, 0, 30000);
+        Platform.runLater(() -> auto_save.schedule(tt_autosave, 0, 30000));
     }
 
     private void setIcons() {
@@ -193,17 +210,45 @@ public class EditorController {
     /**
      * This is called at the first time and add part 1 and chapter 1 to the book
      */
-    private void createPartAndChapterIfNoOne(){
-        if(current_book.getParts().size()==0){
+    private void createPartAndChapterIfNoOne() {
+        if (current_book.getParts().size() == 0) {
             PartDAO p = new PartDAO();
-            p.setId(-1);
             p.setNPart(1);
+            p.persist();
             ChapterDAO c = new ChapterDAO();
-            c.setId(-1);
             c.setNPage(1);
+            c.persist();
             p.getChapters().add(c);
+            p.persist();
             current_book.getParts().add(p);
             current_book.persist();
+        }
+    }
+
+    /**
+     * This method need to be called when we want to save book information
+     * Sincronizamos los objetos para que no haya solapamiento de persistencia entre el auto-save y el boton de guardar
+     */
+    private void saveBook() {
+        if (current_chapter != null) {
+            synchronized (current_chapter) {
+                current_chapter.setText(ta_chapter.getText());
+                current_chapter.setResume(ta_resume_chapter.getText());
+                current_chapter.setNote(ta_note_chapter.getText());
+                current_chapter.setPart(current_part);
+                current_chapter.persist();
+            }
+        }
+        if (current_part != null) {
+            synchronized (current_part) {
+                current_part.setBook(current_book);
+                current_part.persist();
+            }
+        }
+        if (current_book != null) {
+            synchronized (current_book) {
+                current_book.persist();
+            }
         }
     }
 
