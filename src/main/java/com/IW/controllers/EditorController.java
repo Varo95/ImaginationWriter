@@ -119,19 +119,25 @@ public class EditorController {
         tc_part_chapter.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> param) -> new ReadOnlyStringWrapper(param.getValue().getValue()));
         TreeItem<String> root = new TreeItem<>(current_book.getTitle());
         for (IPart p : current_book.getParts()) {
-            TreeItem<String> tp = new TreeItem<>("Parte " + p.getNPart());
-            root.getChildren().add(tp);
-            for (IChapter c : p.getChapters()) {
-                TreeItem<String> tc = new TreeItem<>("Capítulo " + c.getNPage());
-                tp.getChildren().add(tc);
+            if(p!=null) {
+                TreeItem<String> tp = new TreeItem<>("Parte " + p.getNPart());
+                root.getChildren().add(tp);
+                for (IChapter c : p.getChapters()) {
+                    if(c!=null) {
+                        TreeItem<String> tc = new TreeItem<>("Capítulo " + c.getNPage());
+                        tp.getChildren().add(tc);
+                    }
+                }
             }
         }
         table_parts_chapters.setRoot(root);
         cb_parts.setItems(FXCollections.observableList(current_book.getParts()));
+        cb_parts.getItems().removeIf(Objects::isNull);
         cb_parts.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 current_part = new PartDAO(newValue.getId());
                 cb_chapters.setItems(FXCollections.observableList(newValue.getChapters()));
+                cb_chapters.getItems().removeIf(Objects::isNull);
             }
         });
         cb_chapters.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -240,18 +246,26 @@ public class EditorController {
         }
         if (current_part != null) {
             synchronized (current_part) {
+                if(!current_part.getChapters().contains(current_chapter)){
+                    current_part.getChapters().add(current_chapter);
+                }
                 current_part.setBook(current_book);
                 current_part.persist();
             }
         }
         if (current_book != null) {
             synchronized (current_book) {
-                current_book.persist();
+                if(!current_book.getParts().contains(current_part)){
+                    current_book.getParts().add(current_part);
+                }
+                //current_book.persist();
             }
         }
     }
 
     public static void setBook(BookDAO book) {
         current_book = book;
+        current_part = null;
+        current_chapter = null;
     }
 }

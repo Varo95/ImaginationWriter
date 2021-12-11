@@ -70,7 +70,6 @@ public class BookItemsController {
                 c.setBook(current_book);
                 c.persist();
                 table_items_characters.getItems().add(c);
-
             }
         });
         btn_edit_character.setOnAction(event -> {

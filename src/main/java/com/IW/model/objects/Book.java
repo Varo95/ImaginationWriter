@@ -51,14 +51,11 @@ public class Book implements Serializable, IBook {
         this.editors = editors;
         this.cover = cover;
         this.creator = creator;
-        System.out.println(this.toString()
-        );
     }
 
     public Book() {
         this.id = -1;
         this.parts = new ArrayList<>();
-        System.out.println(this.toString());
     }
 
     @Override
