@@ -39,16 +39,16 @@ Touch only MariaDB configuration (ApplicationMariaDB persistence-unit)
 
 ## ScreenShots
 ### Login
-<img height="322" src="https://github.com/Varo95/ImaginationWriter/tree/master/screenshots/Login.png" width="421"/>
+<img height="322" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Login.png" width="421"/>
 
 ### Books View
-<img height="577" src="https://github.com/Varo95/ImaginationWriter/tree/master/screenshots/Books.png" width="665"/>
+<img height="577" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Books.png" width="665"/>
 
 ### Characters-Scene Editor View
-<img height="540" src="https://github.com/Varo95/ImaginationWriter/tree/master/screenshots/Characters-Scenes.png" width="751"/>
+<img height="540" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Characters-Scenes.png" width="751"/>
 
 ### Book Editor View
-<img height="916" src="https://github.com/Varo95/ImaginationWriter/tree/master/screenshots/Book-Editor.png" width="1487"/>
+<img height="916" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Book-Editor.png" width="1487"/>
 
 ### Parts-Chapters Editor View
-<img height="540" src="https://github.com/Varo95/ImaginationWriter/tree/master/screenshots/Parts-Chapters.png" width="751"/>
+<img height="540" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Parts-Chapters.png" width="751"/>
