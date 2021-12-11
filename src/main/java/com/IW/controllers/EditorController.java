@@ -19,6 +19,7 @@ import javafx.util.StringConverter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -74,14 +75,12 @@ public class EditorController {
         configureTreeTableAndComboBox();
         setIcons();
         setAutosave();
-        Platform.runLater(() -> {
-            btn_controlPC.getScene().getWindow().setOnCloseRequest(event -> {
-                if (auto_save != null) {
-                    tt_autosave.cancel();
-                    auto_save.cancel();
-                }
-            });
-        });
+        Platform.runLater(() -> btn_controlPC.getScene().getWindow().setOnCloseRequest(event -> {
+            if (auto_save != null) {
+                tt_autosave.cancel();
+                auto_save.cancel();
+            }
+        }));
         btn_book_items.setOnAction(event -> {
             BookItemsController.setCurrent_book(current_book);
             App.loadScene(new Stage(), "book_items", " Imagination Writer - " + current_book.getTitle(), true, false);

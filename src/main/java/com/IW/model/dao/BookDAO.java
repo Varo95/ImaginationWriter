@@ -3,6 +3,7 @@ package com.IW.model.dao;
 import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.IBeans.IBook;
 import com.IW.interfaces.SQL.IBookDAO;
+import com.IW.model.objects.Author;
 import com.IW.model.objects.Book;
 import com.IW.utils.PersistenceUnit;
 import org.slf4j.Logger;
@@ -73,9 +74,12 @@ public class BookDAO extends Book implements IBookDAO {
     public void addAuthor(IAuthor author) {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();
-        if (this.getEditors() == null)
-            this.editors = new ArrayList<>();
-        this.getEditors().add(author);
+        Book b = em.merge(this);
+        IAuthor a = em.merge(author);
+        if (b.getEditors() == null)
+            b.setEditors(new ArrayList<>());
+        b.getEditors().add(a);
+        em.persist(b);
         em.getTransaction().commit();
         PersistenceUnit.closeEM();
     }

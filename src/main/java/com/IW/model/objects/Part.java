@@ -21,7 +21,7 @@ public class Part implements Serializable, IPart {
     protected long id;
     @Column(name = "nPart")
     protected int nPart;
-    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, targetEntity = Chapter.class)
+    @OneToMany(mappedBy = "part", cascade = CascadeType.ALL, orphanRemoval = false, fetch = FetchType.LAZY, targetEntity = Chapter.class)
     protected List<Chapter> chapters;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER, targetEntity = Book.class)
     protected Book book;

@@ -16,6 +16,9 @@ public class PersistenceUnit {
     private static EntityManagerFactory emf = null;
     private static EntityManager manager = null;
 
+    /**
+     * Solo se llama una vez para conectar con la base de datos
+     */
     public static void init() {
         try {
             emf = Persistence.createEntityManagerFactory("ApplicationH2");
@@ -24,6 +27,10 @@ public class PersistenceUnit {
         }
     }
 
+    /**
+     * Este método es para crear unidades de persistencia
+     * @return entitymanager para la unidad de persistencia
+     */
     public static EntityManager createEM() {
         if (emf == null) {
             try {
@@ -37,6 +44,9 @@ public class PersistenceUnit {
         return manager;
     }
 
+    /**
+     * Cerramos la conexión con la base de datos
+     */
     private static void closeEntityManagerFactory() {
         if (emf != null) {
             emf.close();
@@ -44,6 +54,9 @@ public class PersistenceUnit {
         }
     }
 
+    /**
+     * Cerramos el EntityManager
+     */
     public static void closeEM() {
         if (manager != null) {
             manager.close();
@@ -51,6 +64,9 @@ public class PersistenceUnit {
         }
     }
 
+    /**
+     * Este método sólo se llama una vez al final del programa
+     */
     public static void closeAllConnections() {
         closeEM();
         closeEntityManagerFactory();
