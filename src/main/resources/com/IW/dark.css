@@ -11,7 +11,9 @@
 }
 
 .text-field {
-    -fx-prompt-text-fill: gray;
+    -fx-prompt-text-fill: gray !important;
+    -fx-background-color: #373e43 !important;
+    -fx-text-fill: white !important;
 }
 
 .titulo{
@@ -41,7 +43,7 @@
     -fx-background-color: derive(-fx-base,45%)
 }
 
-.button:default .jfx-button:default{
+.button:default {
     -fx-base: -fx-accent ;
 }
 
@@ -94,7 +96,7 @@
 
     /************************* CSS Variables (Override to set your own theme) ****************************************/
 
-    H1_COLOR: #2796c4; /* @Deprecated: Use ACCENT_COLOR instead. This variable will be removed in a later version */
+    H1_COLOR: #788085; /* @Deprecated: Use ACCENT_COLOR instead. This variable will be removed in a later version */
     ACCENT_COLOR: H1_COLOR;
 
     RIBBON_BUTTON_HIGHLIGHT_COLOR: derive(ACCENT_COLOR, 95%);
@@ -118,4 +120,17 @@
 .ribbon > .outer-container > .tab-pane > .tab-header-area > .headers-region > .tab:selected {
     -fx-background-color: transparent, #cccccc, #373e43;
     -fx-background-radius: 0 0 0 0, 0 0 0 0, 0 0 0 0;
+}
+
+.text-area {
+    text-area-background: #373e43 !important; ;
+}
+
+.text-area .content {
+    -fx-background-color: text-area-background !important;
+    -fx-text-fill: white !important;
+}
+
+.text-area:focused{
+    -fx-text-fill: white !important;
 }

@@ -102,7 +102,6 @@ public class BooksController {
         });
         btn_edit_book.setOnAction(event -> {
             if (table_books.getSelectionModel().getSelectedItem() != null) {
-                System.out.println("Este es el libro "+table_books.getSelectionModel().getSelectedItem().toString());
                 EditorController.setBook((BookDAO) table_books.getSelectionModel().getSelectedItem());
                 App.loadScene(new Stage(), "editor", " Imagination Writer - " + table_books.getSelectionModel().getSelectedItem().getTitle(), false, true);
             }

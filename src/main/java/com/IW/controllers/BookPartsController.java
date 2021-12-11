@@ -14,6 +14,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 
+import java.util.Objects;
+
 public class BookPartsController {
 
     @FXML
@@ -104,6 +106,10 @@ public class BookPartsController {
 
     public static void setCurrent_book(BookDAO book) {
         current_book = book;
+        book.getParts().removeIf(Objects::isNull);
+        for(IPart p: book.getParts()){
+            p.getChapters().removeIf(Objects::isNull);
+        }
     }
 
     private void setIcons() {

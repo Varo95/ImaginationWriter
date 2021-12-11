@@ -16,7 +16,7 @@
             <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <TextField fx:id="tf_name" alignment="CENTER" promptText="NickName" />
+            <TextField fx:id="tf_name" alignment="CENTER" promptText="Nombre" />
             <PasswordField fx:id="tf_passwd" alignment="CENTER" promptText="Contraseña" GridPane.rowIndex="1" />
          </children>
          <BorderPane.margin>

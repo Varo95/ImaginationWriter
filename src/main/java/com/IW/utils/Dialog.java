@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -131,7 +132,9 @@ public class Dialog {
         if (opt.isPresent()) {
             Printer printer = opt.get();
             PrinterJob pj = PrinterJob.createPrinterJob(printer);
+            bookToPrint.getParts().removeIf(Objects::isNull);
             for (IPart p : bookToPrint.getParts()) {
+                p.getChapters().removeIf(Objects::isNull);
                 for (IChapter c : p.getChapters()) {
                     //TODO maquetar un poco mejor el texto(?
                     GridPane g = new GridPane();
