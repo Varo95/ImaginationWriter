@@ -320,6 +320,11 @@ public class Tools {
                 result.setStyle("-fx-text-fill: lightgreen;");
                 yield result;
             }
+            case "print" -> {
+                result = new MDL2IconFont("\uEA90");
+                result.setStyle("-fx-text-fill: red;");
+                yield result;
+            }
             default -> new MDL2IconFont("\uF16B");
         };
         return result;

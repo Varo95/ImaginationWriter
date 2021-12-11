@@ -53,6 +53,8 @@ public class BooksController {
     private TableColumn<IAuthor, String> tc_all_authors_name;
     @FXML
     private Label lb_book_creator;
+    @FXML
+    private Button btn_print;
 
     private static AuthorDAO actual_author;
 
@@ -64,9 +66,10 @@ public class BooksController {
         table_all_authors.getItems().remove(actual_author);
         table_books.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                if (btn_edit_book.isDisabled() && btn_delete_book.isDisabled()) {
+                if (btn_edit_book.isDisabled() && btn_delete_book.isDisabled() && btn_print.isDisabled()) {
                     btn_edit_book.setDisable(false);
                     btn_delete_book.setDisable(false);
+                    btn_print.setDisable(false);
                 }
                 btn_delete_book.setDisable(!newValue.getCreator().equals(actual_author));
                 iview_book_cover.setImage(Objects.requireNonNullElse(Tools.getImage(newValue.getCover(), false), Tools.default_photo_cover));
@@ -159,6 +162,11 @@ public class BooksController {
                 Dialog.showError("Error en la conexión", "Compruebe la conexión a internet", e.getMessage());
             }
         });
+        btn_print.setOnAction(event -> {
+            if(table_books.getSelectionModel().getSelectedItem()!=null){
+                Dialog.printDialog(table_books.getSelectionModel().getSelectedItem());
+            }
+        });
         configureTableColumns();
         addTableBookButtons();
         setIcons();
@@ -173,6 +181,7 @@ public class BooksController {
         mi_close_session.setGraphic(Tools.getIcon("close-session"));
         mi_edit_profile.setGraphic(Tools.getIcon("profile"));
         mi_upload.setGraphic(Tools.getIcon("upload"));
+        btn_print.setGraphic(Tools.getIcon("print"));
     }
 
     private void addTableBookButtons() {

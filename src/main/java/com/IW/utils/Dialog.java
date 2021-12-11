@@ -1,9 +1,11 @@
 package com.IW.utils;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
+import com.IW.interfaces.IBeans.IBook;
+import com.IW.interfaces.IBeans.IChapter;
+import com.IW.interfaces.IBeans.IPart;
+import javafx.print.Printer;
+import javafx.print.PrinterJob;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -112,5 +114,35 @@ public class Dialog {
         dialog.getDialogPane().setContent(p);
         dialog.showAndWait();
         return tf_url.getText();
+    }
+
+    /**
+     * This dialog (appears) to print a book with his pages TODO layout text inside PDF(?
+     *
+     * @param bookToPrint book to print to PDF
+     */
+    public static void printDialog(IBook bookToPrint) {
+        ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
+        Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        dialog.setTitle("Selección de impresora");
+        dialog.setHeaderText("Elige una impresora");
+        dialog.setContentText("¡Elige una impresora que imprima en PDF!");
+        Optional<Printer> opt = dialog.showAndWait();
+        if (opt.isPresent()) {
+            Printer printer = opt.get();
+            PrinterJob pj = PrinterJob.createPrinterJob(printer);
+            for (IPart p : bookToPrint.getParts()) {
+                for (IChapter c : p.getChapters()) {
+                    //TODO maquetar un poco mejor el texto(?
+                    GridPane g = new GridPane();
+                    Label text = new Label();
+                    text.setText(c.getText());
+                    g.addColumn(0, text);
+                    pj.printPage(g);
+                }
+            }
+            pj.endJob();
+            showInformation("¡Exportado con éxito!", "PDF Guardado", "Hemos guardado con éxito el libro");
+        }
     }
 }

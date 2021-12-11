@@ -152,6 +152,7 @@
                      <children>
                         <Label text="Creador" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                         <Label fx:id="lb_book_creator" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                        <Button fx:id="btn_print" disable="true" mnemonicParsing="false" GridPane.rowIndex="1" />
                      </children>
                   </GridPane>
                   <ImageView fx:id="iview_book_cover" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
