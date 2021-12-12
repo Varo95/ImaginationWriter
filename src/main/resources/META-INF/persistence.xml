@@ -11,10 +11,9 @@
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
             <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
             <property name="connection.pool_size" value="1"/>
-            <!--TODO cambiar a validate-->
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-            <!--TODO quitar antes de entregar el proyecto-->
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update" /><!-- Validate es mejor en producción -->
+            <!--Mostrar sentencias SQL lanzadas por hibernate-->
+            <!--<property name="hibernate.show_sql" value="true"/>-->
         </properties>
     </persistence-unit>
     <persistence-unit name="ApplicationMariaDB">
@@ -26,10 +25,9 @@
             <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
             <property name="hibernate.enable_lazy_load_no_trans" value="true"/>
             <property name="hibernate.event.merge.entity_copy_observer" value="allow"/>
-            <!--TODO cambiar a validate-->
-            <property name="hibernate.hbm2ddl.auto" value="update" />
-            <!--TODO quitar antes de entregar el proyecto-->
-            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update" /><!-- Validate es mejor en producción -->
+            <!--Mostrar sentencias SQL lanzadas por hibernate-->
+            <!--<property name="hibernate.show_sql" value="true"/>-->
         </properties>
     </persistence-unit>
 </persistence>

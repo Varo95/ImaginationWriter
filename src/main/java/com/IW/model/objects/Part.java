@@ -88,8 +88,8 @@ public class Part implements Serializable, IPart {
     }
 
     @Override
-    public String toCombobox() {
-        return "Parte: " + this.nPart + "." + this.id;
+    public String toString() {
+        return this.nPart+"";
     }
 
     @Override

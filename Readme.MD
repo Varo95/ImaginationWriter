@@ -1,4 +1,4 @@
-# ¡EarthSound App!
+# ¡Imagination Writer App!
 
 ## What do you need?
 You only need Java [JDK 17](https://www.oracle.com/java/technologies/javase/jdk17-archive-downloads.html)
@@ -33,13 +33,16 @@ Is under ImaginationWriter/src/main/resources/META-INF/persistence.xml
 
 Touch only MariaDB configuration (ApplicationMariaDB persistence-unit)
 
-1. javax.persistence.jdbc.url -> To specify remote MariaDB url(put the name of the database after last "/")
-2. javax.persistence.jdbc.user -> User database that can modify data
-3. javax.persistence.jdbc.password -> Password of the userdatabase
+1. javax.persistence.jdbc.url ➡ To specify remote MariaDB url(put the name of the database after last "/")
+2. javax.persistence.jdbc.user ➡ User database that can modify data
+3. javax.persistence.jdbc.password ➡ Password of the userdatabase
 
 ## ScreenShots
 ### Login
 <img height="322" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Login.png" width="421"/>
+
+### Register-Edit Profile
+<img height="442" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Profile-Editor.png" width="437"/>
 
 ### Books View
 <img height="577" src="https://raw.githubusercontent.com/Varo95/ImaginationWriter/master/screenshots/Books.png" width="665"/>

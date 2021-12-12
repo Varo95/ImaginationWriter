@@ -102,8 +102,8 @@ public class Chapter implements Serializable, IChapter {
     }
 
     @Override
-    public String toCombobox() {
-        return "Capítulo: " + this.nPage + "." + this.id;
+    public String toString() {
+        return this.nPage+"";
     }
 
     @Override

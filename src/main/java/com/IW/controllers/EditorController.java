@@ -15,11 +15,9 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -154,38 +152,6 @@ public class EditorController {
                 ta_note_chapter.setText(current_chapter.getNote());
                 ta_resume_chapter.setText(current_chapter.getResume());
                 ta_chapter.setText(current_chapter.getText());
-            }
-        });
-        cb_parts.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(IPart object) {
-                return object == null ? null : object.toCombobox();
-            }
-
-            @Override
-            public IPart fromString(String string) {
-                IPart p = null;
-                if (string != null) {
-                    long id = Long.parseLong(string.substring(string.lastIndexOf(".")));
-                    p = new PartDAO(id);
-                }
-                return p;
-            }
-        });
-        cb_chapters.setConverter(new StringConverter<>() {
-            @Override
-            public String toString(IChapter object) {
-                return object == null ? null : object.toCombobox();
-            }
-
-            @Override
-            public IChapter fromString(String string) {
-                IChapter c = null;
-                if (string != null) {
-                    long id = Long.parseLong(string.substring(string.lastIndexOf(".")));
-                    c = new ChapterDAO(id);
-                }
-                return c;
             }
         });
     }

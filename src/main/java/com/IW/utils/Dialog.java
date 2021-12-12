@@ -8,6 +8,8 @@ import javafx.print.PrinterJob;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import jfxtras.styles.jmetro.JMetro;
+import jfxtras.styles.jmetro.Style;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -35,6 +37,7 @@ public class Dialog {
     private static void showDialog(Alert.AlertType type, String title, String header, String description) {
         Alert alert = new Alert(type);
         Tools.addCssAndIcon((Stage) alert.getDialogPane().getScene().getWindow());
+        new JMetro(Style.DARK).setScene(alert.getDialogPane().getScene());
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(description);
@@ -44,6 +47,7 @@ public class Dialog {
     private static boolean showDialogBoolean(String title, String header, String description) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Tools.addCssAndIcon((Stage) alert.getDialogPane().getScene().getWindow());
+        new JMetro(Style.DARK).setScene(alert.getDialogPane().getScene());
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(description);
@@ -62,6 +66,7 @@ public class Dialog {
     public static String showDialogString(String title, String header, String description) {
         TextInputDialog dialog = new TextInputDialog("");
         Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        new JMetro(Style.DARK).setScene(dialog.getDialogPane().getScene());
         dialog.setTitle(title);
         dialog.setHeaderText(header);
         dialog.setContentText(description);
@@ -80,6 +85,7 @@ public class Dialog {
     public static int showDialogPart_Chapter(String title, String header, String description) {
         TextInputDialog dialog = new TextInputDialog();
         Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        new JMetro(Style.DARK).setScene(dialog.getDialogPane().getScene());
         Tools.onlyDoubleValue(dialog.getEditor());
         dialog.setTitle(title);
         dialog.setHeaderText(header);
@@ -99,6 +105,7 @@ public class Dialog {
     public static String showDialogExamine(String title, String header, String description) {
         Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
         Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        new JMetro(Style.DARK).setScene(dialog.getDialogPane().getScene());
         dialog.setTitle(title);
         dialog.setHeaderText(header);
         dialog.setContentText(description);
@@ -125,6 +132,7 @@ public class Dialog {
     public static void printDialog(IBook bookToPrint) {
         ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
         Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
+        new JMetro(Style.DARK).setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Selección de impresora");
         dialog.setHeaderText("Elige una impresora");
         dialog.setContentText("¡Elige una impresora que imprima en PDF!");

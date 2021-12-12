@@ -8,6 +8,7 @@ import com.IW.model.dao.BookDAO;
 import com.IW.utils.Dialog;
 import com.IW.utils.PersistenceUnit;
 import com.IW.utils.Tools;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -166,6 +167,7 @@ public class BooksController {
                 Dialog.printDialog(table_books.getSelectionModel().getSelectedItem());
             }
         });
+        Platform.runLater(() -> btn_print.getScene().getWindow().setOnCloseRequest(event -> mi_close_session.fire()));
         configureTableColumns();
         addTableBookButtons();
         setIcons();
