@@ -53,6 +53,7 @@ public class ProfileController {
         tf_passwd.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) btn_save.fire();
         });
+        //Acción del botón Cambiar Foto
         btn_photo.setOnAction(event -> {
             photo = Tools.selectImageFile();
             if (photo == null) {
@@ -61,6 +62,7 @@ public class ProfileController {
                 iview_profile.setImage(Tools.getImage(photo, false));
             }
         });
+        //Acción del botón desbloquear
         lock.setOnAction(event -> {
             if (Dialog.showConfirmation("¿Desbloquear?", "¿Desea realizar cambios en su perfil?", "")) {
                 AuthorDAO a = new AuthorDAO();
@@ -86,6 +88,7 @@ public class ProfileController {
                 lock.setGraphic(Tools.getIcon("lock-locked"));
             }
         });
+        //Acción del botón guardar
         btn_save.setOnAction(event -> {
             if (!tf_name.getText().trim().equals("") && !tf_passwd.getText().trim().equals("")) {
                 actual_author.setName(tf_name.getText().replace("\n", ""));

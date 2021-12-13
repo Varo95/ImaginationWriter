@@ -38,6 +38,15 @@ public class App extends Application {
         return result;
     }
 
+    /**
+     * This method is used to load new Scenes
+     * @param stage instance always a new Stage
+     * @param fxml string of the fxml without the extension
+     * @param title title of the window
+     * @param SaW if the window must wait to the previous one
+     * @param isResizable if thw window can be or not resizable
+     */
+
     public static void loadScene(Stage stage, String fxml, String title, boolean SaW, boolean isResizable) {
         stage.setScene(new Scene(loadFXML(fxml)));
         Tools.addCssAndIcon(stage);

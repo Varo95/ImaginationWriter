@@ -73,6 +73,10 @@ public class PersistenceUnit {
         closeEntityManagerFactory();
     }
 
+    /**
+     * Copia la base de datos de H2 a MariaDB
+     * @throws IllegalStateException en caso de que haya un error con la conexión a la base de datos de MariaDB
+     */
     public static void copyH2toMariaDB() throws IllegalStateException {
         if (emf != null) {
             EntityManagerFactory temp = null;
@@ -120,7 +124,10 @@ public class PersistenceUnit {
             }
         }
     }
-
+    /**
+     * Copia la base de datos MariaDB a H2
+     * @throws IllegalStateException en caso de que haya un error con la conexión a la base de datos de MariaDB
+     */
     public static void copyMariaDBToH2() throws IllegalStateException {
         if (emf != null) {
             EntityManagerFactory temp = null;

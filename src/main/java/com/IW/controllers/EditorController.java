@@ -73,38 +73,45 @@ public class EditorController {
         configureTreeTableAndComboBox();
         setIcons();
         setAutosave();
+        //Cancelamos el auto-save cuando se cierre la ventana
         Platform.runLater(() -> btn_controlPC.getScene().getWindow().setOnCloseRequest(event -> {
             if (auto_save != null) {
                 tt_autosave.cancel();
                 auto_save.cancel();
             }
         }));
+        //Acción del botón para ver los personajes-escenas del libro
         btn_book_items.setOnAction(event -> {
             BookItemsController.setCurrent_book(current_book);
             App.loadScene(new Stage(), "book_items", " Imagination Writer - " + current_book.getTitle(), true, false);
         });
+        //Acción del botón guardar nota
         btn_save_note.setOnAction(event -> {
             if (current_chapter != null) {
                 current_chapter.setNote(ta_note_chapter.getText());
                 current_chapter.persist();
             }
         });
+        //Acción del botón guardar resumen
         btn_save_resume.setOnAction(event -> {
             if (current_chapter != null) {
                 current_chapter.setResume(ta_resume_chapter.getText());
                 current_chapter.persist();
             }
         });
+        //Acción del botón guardar libro
         btn_save_book.setOnAction(event -> {
             saveBook();
             lb_info_save.setText("Guardaste correctamente el libro");
             lb_auto_save.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss | dd/MM/yyyy")));
         });
+        //Acción del botón abrir
         btn_open_txt.setOnAction(event -> {
             if(current_chapter!=null){
-                ta_chapter.setText(Objects.requireNonNullElse(Tools.readTextFromTXTFile(), ""));
+                ta_chapter.setText(Objects.requireNonNullElse(Tools.readTextFromTXTFile(), ta_chapter.getText()));
             }
         });
+        //Seteamos la acción del botón para gestionar las partes-capítulos
         btn_controlPC.setOnAction(event -> {
             if(current_book!=null){
                 BookPartsController.setCurrent_book(current_book);
@@ -113,6 +120,10 @@ public class EditorController {
         });
     }
 
+    /**
+     * Con este método configuramos la TreeTable de las partes y capítulos del libro
+     * Además configuramos los dos comboboxes y los bindeamos para que el de capítulos esté a la escucha del de partes y cambie sus valores
+     */
     private void configureTreeTableAndComboBox() {
         tc_part_chapter.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> param) -> new ReadOnlyStringWrapper(param.getValue().getValue()));
         TreeItem<String> root = new TreeItem<>(current_book.getTitle());
@@ -156,6 +167,9 @@ public class EditorController {
         });
     }
 
+    /**
+     * Añadimos un auto-save cada 30 segundos
+     */
     private void setAutosave() {
         auto_save = new Timer();
         tt_autosave = new TimerTask() {
@@ -171,6 +185,9 @@ public class EditorController {
         Platform.runLater(() -> auto_save.schedule(tt_autosave, 0, 30000));
     }
 
+    /**
+     * Seteamos los iconos
+     */
     private void setIcons() {
         btn_controlPC.setGraphic(Tools.getIcon("list-cp"));
         chapter_item.setGraphic(Tools.getIcon("book_chapter"));
@@ -224,7 +241,6 @@ public class EditorController {
                 if(!current_book.getParts().contains(current_part)){
                     current_book.getParts().add(current_part);
                 }
-                //current_book.persist();
             }
         }
     }

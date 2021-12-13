@@ -148,6 +148,9 @@ public class BookItemsController {
         setIcons();
     }
 
+    /**
+     * Configuramos las tablas y añadimos los listener para cambiar los datos conforme hacemos click en los elementos de las tablas
+     */
     private void configureTables() {
         tc_items_scenes.setCellValueFactory(eachScene -> new SimpleStringProperty(eachScene.getValue().getTitle()));
         tc_items_characters.setCellValueFactory(eachCharacter -> new SimpleStringProperty(eachCharacter.getValue().getName()));
@@ -173,10 +176,17 @@ public class BookItemsController {
         });
     }
 
+    /**
+     * Este método sirve para cuando llamamos a la vista, que el libro no esté a null y puedan cargar los elementos correspondientes de la vista con el controlador
+     * @param book
+     */
     public static void setCurrent_book(BookDAO book) {
         current_book = book;
     }
 
+    /**
+     * Seteamos los iconos con este método
+     */
     private void setIcons() {
         btn_add_character.setGraphic(Tools.getIcon("add"));
         btn_edit_character.setGraphic(Tools.getIcon("edit"));

@@ -66,6 +66,11 @@ public class AuthorDAO extends Author implements IAuthorDAO {
         PersistenceUnit.closeEM();
     }
 
+    /**
+     * Este método sirve para validar que las credenciales de un usuario sean correctas, pues la contraseña está encriptada
+     * en la base de datos
+     * @return true si es correcta la contraseña, false si no coinciden.
+     */
     @Override
     public boolean checkUser() {
         EntityManager em = PersistenceUnit.createEM();

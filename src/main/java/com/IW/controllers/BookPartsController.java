@@ -99,7 +99,9 @@ public class BookPartsController {
             table_chapters.getItems().remove(current_chapter);
         });
     }
-
+    /**
+     * Configuramos las tablas y añadimos los listener para cambiar los datos conforme hacemos click en los elementos de las tablas
+     */
     private void configureTables() {
         tc_parts.setCellValueFactory(eachPart -> new SimpleStringProperty("Parte: " + eachPart.getValue().getNPart()));
         tc_chapters.setCellValueFactory(eachChapter -> new SimpleStringProperty("Capítulo: " + eachChapter.getValue().getNPage()));

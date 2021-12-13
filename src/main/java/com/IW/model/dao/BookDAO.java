@@ -3,7 +3,6 @@ package com.IW.model.dao;
 import com.IW.interfaces.IBeans.IAuthor;
 import com.IW.interfaces.IBeans.IBook;
 import com.IW.interfaces.SQL.IBookDAO;
-import com.IW.model.objects.Author;
 import com.IW.model.objects.Book;
 import com.IW.utils.PersistenceUnit;
 import org.slf4j.Logger;
@@ -93,7 +92,11 @@ public class BookDAO extends Book implements IBookDAO {
         PersistenceUnit.closeEM();
     }
 
-
+    /**
+     * Este método sirve para replegar los libros que HAN COMPARTIDO a un usuario
+     * @param editor Usuario del que queremos consultar sus libros compartidos
+     * @return Lista de libros compartidos
+     */
     public static List<IBook> getBooksAsEditor(IAuthor editor) {
         EntityManager em = PersistenceUnit.createEM();
         em.getTransaction().begin();

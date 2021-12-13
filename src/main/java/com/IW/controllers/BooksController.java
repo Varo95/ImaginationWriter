@@ -172,7 +172,9 @@ public class BooksController {
         addTableBookButtons();
         setIcons();
     }
-
+    /**
+     * Seteamos los iconos con este método
+     */
     private void setIcons() {
         btn_add_book.setGraphic(Tools.getIcon("add"));
         btn_edit_book.setGraphic(Tools.getIcon("edit"));
@@ -185,6 +187,9 @@ public class BooksController {
         btn_print.setGraphic(Tools.getIcon("print"));
     }
 
+    /**
+     * Añadimos el botón de la tabla Libros y lo configuramos para que podamos ver las escenas y los personajes del mismo
+     */
     private void addTableBookButtons() {
         TableColumn<IBook, Void> tc_book_scenes = new TableColumn<>("");
         tc_book_scenes.setStyle("-fx-alignment: CENTER;");
