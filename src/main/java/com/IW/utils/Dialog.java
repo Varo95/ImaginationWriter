@@ -130,7 +130,7 @@ public class Dialog {
      * @param bookToPrint book to print to PDF
      */
     public static void printDialog(IBook bookToPrint) {
-        ChoiceDialog dialog = new ChoiceDialog(Printer.getDefaultPrinter(), Printer.getAllPrinters());
+        ChoiceDialog<Printer> dialog = new ChoiceDialog<>(Printer.getDefaultPrinter(), Printer.getAllPrinters());
         Tools.addCssAndIcon((Stage) dialog.getDialogPane().getScene().getWindow());
         new JMetro(Style.DARK).setScene(dialog.getDialogPane().getScene());
         dialog.setTitle("Selección de impresora");

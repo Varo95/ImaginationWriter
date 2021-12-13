@@ -63,10 +63,11 @@ public class ProfileController {
         });
         lock.setOnAction(event -> {
             if (Dialog.showConfirmation("¿Desbloquear?", "¿Desea realizar cambios en su perfil?", "")) {
-                actual_author.setName(tf_name.getText());
-                actual_author.setPassword(Dialog.showDialogString("Cuidado", "Para verificar que es ud, le pedimos otra vez la contraseña", "Introduzca su contraseña actual"));
-                if (actual_author.getPassword() != null) {
-                    if (actual_author.checkUser()) {
+                AuthorDAO a = new AuthorDAO();
+                a.setName(tf_name.getText());
+                a.setPassword(Dialog.showDialogString("Cuidado", "Para verificar que es ud, le pedimos otra vez la contraseña", "Introduzca su contraseña actual"));
+                if (a.getPassword() != null && !a.getPassword().equals("")) {
+                    if (a.checkUser() && a.equals(actual_author)) {
                         tf_passwd.clear();
                         tf_name.setDisable(false);
                         tf_passwd.setDisable(false);

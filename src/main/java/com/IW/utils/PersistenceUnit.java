@@ -29,6 +29,7 @@ public class PersistenceUnit {
 
     /**
      * Este método es para crear unidades de persistencia
+     *
      * @return entitymanager para la unidad de persistencia
      */
     public static EntityManager createEM() {
@@ -80,41 +81,43 @@ public class PersistenceUnit {
             } catch (PersistenceException e) {
                 throw new IllegalStateException(e.getMessage());
             }
-            EntityManager t = temp.createEntityManager();
-            t.getTransaction().begin();
-            for (Author a : getAllAuthors(emf)) {
-                a = t.merge(a);
-                t.persist(a);
-            }
-            for (Book b : getAllBooks(emf)) {
-                List<IAuthor> a = new ArrayList<>();
-                for (IAuthor au : b.getEditors()) {
-                    au = t.merge(au);
-                    a.add(au);
+            if (temp != null) {
+                EntityManager t = temp.createEntityManager();
+                t.getTransaction().begin();
+                for (Author a : getAllAuthors(emf)) {
+                    a = t.merge(a);
+                    t.persist(a);
                 }
-                b = t.merge(b);
-                b.setEditors(a);
-                t.persist(b);
+                for (Book b : getAllBooks(emf)) {
+                    List<IAuthor> a = new ArrayList<>();
+                    for (IAuthor au : b.getEditors()) {
+                        au = t.merge(au);
+                        a.add(au);
+                    }
+                    b = t.merge(b);
+                    b.setEditors(a);
+                    t.persist(b);
+                }
+                for (Chapter c : getAllChapters(emf)) {
+                    c = t.merge(c);
+                    t.persist(c);
+                }
+                for (Character c : getAllCharacters(emf)) {
+                    c = t.merge(c);
+                    t.persist(c);
+                }
+                for (Part p : getAllParts(emf)) {
+                    p = t.merge(p);
+                    t.persist(p);
+                }
+                for (Scene s : getAllScenes(emf)) {
+                    s = t.merge(s);
+                    t.persist(s);
+                }
+                t.getTransaction().commit();
+                t.close();
+                temp.close();
             }
-            for (Chapter c : getAllChapters(emf)) {
-                c = t.merge(c);
-                t.persist(c);
-            }
-            for (Character c : getAllCharacters(emf)) {
-                c = t.merge(c);
-                t.persist(c);
-            }
-            for (Part p : getAllParts(emf)) {
-                p = t.merge(p);
-                t.persist(p);
-            }
-            for (Scene s : getAllScenes(emf)) {
-                s = t.merge(s);
-                t.persist(s);
-            }
-            t.getTransaction().commit();
-            t.close();
-            temp.close();
         }
     }
 
@@ -126,41 +129,43 @@ public class PersistenceUnit {
             } catch (PersistenceException e) {
                 throw new IllegalStateException(e.getMessage());
             }
-            EntityManager t = emf.createEntityManager();
-            t.getTransaction().begin();
-            for (Author a : getAllAuthors(temp)) {
-                a = t.merge(a);
-                t.persist(a);
-            }
-            for (Book b : getAllBooks(temp)) {
-                List<IAuthor> a = new ArrayList<>();
-                for (IAuthor au : b.getEditors()) {
-                    au = t.merge(au);
-                    a.add(au);
+            if (temp != null) {
+                EntityManager t = emf.createEntityManager();
+                t.getTransaction().begin();
+                for (Author a : getAllAuthors(temp)) {
+                    a = t.merge(a);
+                    t.persist(a);
                 }
-                b = t.merge(b);
-                b.setEditors(a);
-                t.persist(b);
+                for (Book b : getAllBooks(temp)) {
+                    List<IAuthor> a = new ArrayList<>();
+                    for (IAuthor au : b.getEditors()) {
+                        au = t.merge(au);
+                        a.add(au);
+                    }
+                    b = t.merge(b);
+                    b.setEditors(a);
+                    t.persist(b);
+                }
+                for (Chapter c : getAllChapters(temp)) {
+                    c = t.merge(c);
+                    t.persist(c);
+                }
+                for (Character c : getAllCharacters(temp)) {
+                    c = t.merge(c);
+                    t.persist(c);
+                }
+                for (Part p : getAllParts(temp)) {
+                    p = t.merge(p);
+                    t.persist(p);
+                }
+                for (Scene s : getAllScenes(temp)) {
+                    s = t.merge(s);
+                    t.persist(s);
+                }
+                t.getTransaction().commit();
+                t.close();
+                temp.close();
             }
-            for (Chapter c : getAllChapters(temp)) {
-                c = t.merge(c);
-                t.persist(c);
-            }
-            for (Character c : getAllCharacters(temp)) {
-                c = t.merge(c);
-                t.persist(c);
-            }
-            for (Part p : getAllParts(temp)) {
-                p = t.merge(p);
-                t.persist(p);
-            }
-            for (Scene s : getAllScenes(temp)) {
-                s = t.merge(s);
-                t.persist(s);
-            }
-            t.getTransaction().commit();
-            t.close();
-            temp.close();
         }
     }
 

@@ -42,7 +42,6 @@ public class BookPartsController {
     private static PartDAO current_part;
     private static ChapterDAO current_chapter;
 
-    //TODO todavía por terminar
     @FXML
     protected void initialize() {
         configureTables();
@@ -102,8 +101,8 @@ public class BookPartsController {
     }
 
     private void configureTables() {
-        tc_parts.setCellValueFactory(eachPart -> new SimpleStringProperty("Capítulo: " + eachPart.getValue().getNPart()));
-        tc_chapters.setCellValueFactory(eachChapter -> new SimpleStringProperty("Parte: " + eachChapter.getValue().getNPage() + ""));
+        tc_parts.setCellValueFactory(eachPart -> new SimpleStringProperty("Parte: " + eachPart.getValue().getNPart()));
+        tc_chapters.setCellValueFactory(eachChapter -> new SimpleStringProperty("Capítulo: " + eachChapter.getValue().getNPage()));
         table_parts.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 if (btn_add_chapter.isDisabled() && btn_edit_part.isDisabled() && btn_remove_part.isDisabled()) {
