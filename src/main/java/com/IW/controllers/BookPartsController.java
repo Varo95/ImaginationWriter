@@ -99,6 +99,7 @@ public class BookPartsController {
             table_chapters.getItems().remove(current_chapter);
         });
     }
+
     /**
      * Configuramos las tablas y añadimos los listener para cambiar los datos conforme hacemos click en los elementos de las tablas
      */
@@ -113,7 +114,7 @@ public class BookPartsController {
                     btn_remove_part.setDisable(false);
                 }
                 table_chapters.setItems(FXCollections.observableList(newValue.getChapters()));
-                current_part = new PartDAO(newValue.getId());
+                current_part = (PartDAO) newValue;
             }
         });
         table_chapters.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -122,7 +123,7 @@ public class BookPartsController {
                     btn_edit_chapter.setDisable(false);
                     btn_remove_chapter.setDisable(false);
                 }
-                current_chapter = new ChapterDAO(newValue.getId());
+                current_chapter = (ChapterDAO) newValue;
             }
         });
     }

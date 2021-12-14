@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.logging.Level;
 
 public class App extends Application {
 
@@ -21,6 +22,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
         PersistenceUnit.init();
         loadScene(primaryStage, "login", " Imagination Writer - Login", false, false);
     }

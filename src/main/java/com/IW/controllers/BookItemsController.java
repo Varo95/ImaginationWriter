@@ -7,6 +7,7 @@ import com.IW.model.dao.CharacterDAO;
 import com.IW.model.dao.SceneDAO;
 import com.IW.utils.Dialog;
 import com.IW.utils.Tools;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -53,8 +54,14 @@ public class BookItemsController {
     @FXML
     protected void initialize() {
         configureTables();
-        table_items_characters.setItems(FXCollections.observableList(current_book.getCharacters()));
-        table_items_scenes.setItems(FXCollections.observableList(current_book.getScenes()));
+        if (current_book.getCharacters() != null) {
+            current_book.getCharacters().removeIf(Objects::isNull);
+            table_items_characters.setItems(FXCollections.observableList(current_book.getCharacters()));
+        }
+        if (current_book.getScenes() != null) {
+            current_book.getScenes().removeIf(Objects::isNull);
+            table_items_scenes.setItems(FXCollections.observableList(current_book.getScenes()));
+        }
         btn_add_character.setOnAction(event -> {
             CharacterDAO c = new CharacterDAO();
             c.setName(Dialog.showDialogString("Nombre del nuevo personaje", "Nombre personaje", "Introduce el nuevo nombre del personaje"));
@@ -74,7 +81,7 @@ public class BookItemsController {
         });
         btn_edit_character.setOnAction(event -> {
             if (table_items_characters.getSelectionModel().getSelectedItem() != null) {
-                CharacterDAO c = new CharacterDAO(table_items_characters.getSelectionModel().getSelectedItem().getId());
+                CharacterDAO c = (CharacterDAO) table_items_characters.getSelectionModel().getSelectedItem();
                 c.setName(Dialog.showDialogString("Nombre del nuevo personaje", "Nombre personaje", c.getName()));
                 c.setDescription(Dialog.showDialogString("Descripción del nuevo personaje", "Descripción personaje", c.getDescription()));
                 String cover = Dialog.showDialogExamine("Foto personaje", "Selecciona el personaje", c.getPhoto());
@@ -95,7 +102,7 @@ public class BookItemsController {
         });
         btn_delete_character.setOnAction(event -> {
             if (table_items_characters.getSelectionModel().getSelectedItem() != null) {
-                CharacterDAO c = new CharacterDAO(table_items_characters.getSelectionModel().getSelectedItem().getId());
+                CharacterDAO c = (CharacterDAO) table_items_characters.getSelectionModel().getSelectedItem();
                 c.remove();
                 table_items_characters.getItems().remove(c);
             }
@@ -120,7 +127,7 @@ public class BookItemsController {
         });
         btn_edit_scene.setOnAction(event -> {
             if (table_items_scenes.getSelectionModel().getSelectedItem() != null) {
-                SceneDAO s = new SceneDAO(table_items_scenes.getSelectionModel().getSelectedItem().getId());
+                SceneDAO s = (SceneDAO) table_items_scenes.getSelectionModel().getSelectedItem();
                 s.setTitle(Dialog.showDialogString("Título de la nueva escena", "Título escena", s.getTitle()));
                 s.setDescription(Dialog.showDialogString("Descripción la escena", "Descripción la escena", s.getDescription()));
                 String cover = Dialog.showDialogExamine("Foto escena", "Selecciona la foto de la escena", s.getPhoto());
@@ -140,12 +147,13 @@ public class BookItemsController {
         });
         btn_delete_scene.setOnAction(event -> {
             if (table_items_scenes.getSelectionModel().getSelectedItem() != null) {
-                SceneDAO s = new SceneDAO(table_items_scenes.getSelectionModel().getSelectedItem().getId());
+                SceneDAO s = (SceneDAO)table_items_scenes.getSelectionModel().getSelectedItem();
                 s.remove();
                 table_items_scenes.getItems().remove(s);
             }
         });
         setIcons();
+        Platform.runLater(()-> btn_add_character.getScene().getWindow().setOnCloseRequest(event -> BooksController.refreshBooks()));
     }
 
     /**
@@ -178,6 +186,7 @@ public class BookItemsController {
 
     /**
      * Este método sirve para cuando llamamos a la vista, que el libro no esté a null y puedan cargar los elementos correspondientes de la vista con el controlador
+     *
      * @param book
      */
     public static void setCurrent_book(BookDAO book) {

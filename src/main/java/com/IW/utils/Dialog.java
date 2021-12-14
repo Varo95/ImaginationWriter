@@ -91,7 +91,7 @@ public class Dialog {
         dialog.setHeaderText(header);
         dialog.setContentText(description);
         Optional<String> result = dialog.showAndWait();
-        return Integer.parseInt(result.orElse("-1"));
+        return (Double.valueOf(result.orElse("-1"))).intValue();
     }
 
     /**

@@ -79,6 +79,7 @@ public class EditorController {
                 tt_autosave.cancel();
                 auto_save.cancel();
             }
+            BooksController.refreshBooks();
         }));
         //Acción del botón para ver los personajes-escenas del libro
         btn_book_items.setOnAction(event -> {
@@ -107,15 +108,15 @@ public class EditorController {
         });
         //Acción del botón abrir
         btn_open_txt.setOnAction(event -> {
-            if(current_chapter!=null){
+            if (current_chapter != null) {
                 ta_chapter.setText(Objects.requireNonNullElse(Tools.readTextFromTXTFile(), ta_chapter.getText()));
             }
         });
         //Seteamos la acción del botón para gestionar las partes-capítulos
         btn_controlPC.setOnAction(event -> {
-            if(current_book!=null){
+            if (current_book != null) {
                 BookPartsController.setCurrent_book(current_book);
-                App.loadScene(new Stage(), "book_parts","Gestor de capítulos-partes de "+current_book.getTitle(), false, false);
+                App.loadScene(new Stage(), "book_parts", "Gestor de capítulos-partes de " + current_book.getTitle(), false, false);
             }
         });
     }
@@ -128,11 +129,11 @@ public class EditorController {
         tc_part_chapter.setCellValueFactory((TreeTableColumn.CellDataFeatures<String, String> param) -> new ReadOnlyStringWrapper(param.getValue().getValue()));
         TreeItem<String> root = new TreeItem<>(current_book.getTitle());
         for (IPart p : current_book.getParts()) {
-            if(p!=null) {
+            if (p != null) {
                 TreeItem<String> tp = new TreeItem<>("Parte " + p.getNPart());
                 root.getChildren().add(tp);
                 for (IChapter c : p.getChapters()) {
-                    if(c!=null) {
+                    if (c != null) {
                         TreeItem<String> tc = new TreeItem<>("Capítulo " + c.getNPage());
                         tp.getChildren().add(tc);
                     }
@@ -144,14 +145,14 @@ public class EditorController {
         cb_parts.getItems().removeIf(Objects::isNull);
         cb_parts.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                current_part = new PartDAO(newValue.getId());
+                current_part = (PartDAO) newValue;
                 cb_chapters.setItems(FXCollections.observableList(newValue.getChapters()));
                 cb_chapters.getItems().removeIf(Objects::isNull);
             }
         });
         cb_chapters.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                current_chapter = new ChapterDAO(newValue.getId());
+                current_chapter = (ChapterDAO) newValue;
                 if (ta_chapter.isDisabled() && tab_chapter.isDisabled() && ta_resume_chapter.isDisabled()) {
                     ta_chapter.setDisable(false);
                     tab_chapter.setDisable(false);
@@ -175,7 +176,7 @@ public class EditorController {
         tt_autosave = new TimerTask() {
             @Override
             public void run() {
-                Platform.runLater(()->{
+                Platform.runLater(() -> {
                     saveBook();
                     lb_info_save.setText("Último autoguardado");
                     lb_auto_save.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss | dd/MM/yyyy")));
@@ -210,6 +211,26 @@ public class EditorController {
             p.persist();
             current_book.getParts().add(p);
             current_book.persist();
+            current_chapter = c;
+            current_part = p;
+            cb_parts.getItems().add(current_part);
+            cb_chapters.getItems().add(current_chapter);
+            cb_parts.getSelectionModel().selectFirst();
+            cb_chapters.getSelectionModel().selectFirst();
+            ta_chapter.setDisable(false);
+            chapter_item.setDisable(false);
+            ta_chapter.requestFocus();
+        } else {
+            Platform.runLater(()->{
+                cb_parts.getSelectionModel().selectLast();
+                cb_chapters.getSelectionModel().selectLast();
+                current_part = (PartDAO) cb_parts.getSelectionModel().getSelectedItem();
+                current_chapter = (ChapterDAO) cb_chapters.getSelectionModel().getSelectedItem();
+                ta_chapter.setDisable(false);
+                chapter_item.setDisable(false);
+                ta_chapter.requestFocus();
+                ta_chapter.end();
+            });
         }
     }
 
@@ -229,7 +250,7 @@ public class EditorController {
         }
         if (current_part != null) {
             synchronized (current_part) {
-                if(!current_part.getChapters().contains(current_chapter)){
+                if (!current_part.getChapters().contains(current_chapter)) {
                     current_part.getChapters().add(current_chapter);
                 }
                 current_part.setBook(current_book);
@@ -238,9 +259,10 @@ public class EditorController {
         }
         if (current_book != null) {
             synchronized (current_book) {
-                if(!current_book.getParts().contains(current_part)){
+                if (!current_book.getParts().contains(current_part)) {
                     current_book.getParts().add(current_part);
                 }
+                current_book.persist();
             }
         }
     }

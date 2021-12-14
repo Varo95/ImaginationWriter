@@ -133,7 +133,7 @@
 
     </top>
     <center>
-        <TextArea fx:id="ta_chapter" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+        <TextArea fx:id="ta_chapter" disable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" wrapText="true" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
             </BorderPane.margin>

@@ -11,8 +11,10 @@ import com.IW.utils.Tools;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -57,10 +59,13 @@ public class BooksController {
     @FXML
     private Button btn_print;
 
+    public static Scene s;
+
     private static AuthorDAO actual_author;
 
     @FXML
     protected void initialize() {
+        Platform.runLater(()-> s = btn_add_author.getScene());
         table_books.setItems(FXCollections.observableList(actual_author.getBooks()));
         table_books.getItems().addAll(BookDAO.getBooksAsEditor(actual_author));
         table_all_authors.setItems(FXCollections.observableList(AuthorDAO.listAll()));
@@ -243,5 +248,11 @@ public class BooksController {
      */
     public static void setAuthor(AuthorDAO author) {
         actual_author = author;
+    }
+
+    public static void refreshBooks(){
+        TableView<IBook> tv = (TableView<IBook>) s.lookup("#table_books");
+        tv.setItems(FXCollections.observableList(actual_author.getBooks()));
+        tv.refresh();
     }
 }
